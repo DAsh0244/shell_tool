@@ -1,8 +1,9 @@
-from PyDAQmx import *
 import numpy as np
+from PyDAQmx import *
+
 from constants import *
 
-data = np.zeros((samples_,), dtype=np.float64)
+data = np.zeros(BUFSIZE, dtype=np.float64)
 
 
 def fin_read(sample_rate=sample_rate_, samples=samples_,min=min_,max=max_):
@@ -25,3 +26,8 @@ def con_read(sample_rate=sample_rate_, samples=samples_,min=min_,max=max_):
     print("Acquired {} points".format(read.value))
 
 
+def view(entries=10, tail=False):
+    if not tail:
+        print(data[0:entries])
+    else:
+        print(data[-entries])

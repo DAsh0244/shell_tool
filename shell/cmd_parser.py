@@ -1,6 +1,4 @@
 import argparse
-import sys
-
 # import daq_handler as daq
 import fake_daq as daq
 import constants as CON
@@ -14,9 +12,15 @@ class ReadParser(argparse.ArgumentParser):
 
 class Cli:
     def __init__(self):
+        self.save_parser = ReadParser('save')
         self.fin_parser = ReadParser('fin_read')
         self.con_parser = ReadParser('con_read')
         self.view_parser = ReadParser('view')
+
+        """ Save data Parser """
+        self.save_parser.add_argument('--version', action='version', version='0.0.1')
+        self.save_parser.add_argument('file_name', type=str, action='store',
+                                      help='file name to save current data as')
 
         """ Finite Read Parser """
         self.fin_parser.add_argument('--version', action='version', version='0.0.1')
@@ -50,28 +54,10 @@ class Cli:
 
     #     quit_parser = self.subparsers.add_parser('quit')
     #     quit_parser.add_argument('--confirm', action='store_true', default=False, help='exit CLI')
-    #     quit_parser.set_defaults(func=self.quitAction)
-    #
-    # def quitAction(self, confirm):
-    #     if confirm is True:
-    #         self.quit = True
-    #     else:
-    #         choice = input('really exit? (y/n): ')
-    #         if choice.lower() == 'y':
-    #             self.quit = True
-    #         else:
-    #             pass
-
-    def get_data(self):
-        pass
-
-
-class Storage:
-    pass
 
 if __name__ == '__main__':
     import os
-    storage = Storage()
+    import sys
     cli = Cli()
     args = cli.fin_parser.parse_args()
     args.func(**vars(args))
@@ -84,12 +70,4 @@ if __name__ == '__main__':
     args = cli.view_parser.parse_args(['12'])
     args.func(**vars(args))
 
-    # while not cli.quit:
-    #     try:
-    #         args.func(args)
-    #     except Exception as err:
-    #         print(err)
-    #         os.system('pause')
-    #         print(daq.data)
-    #     # cli.quitAction(True)
     sys.exit(0)

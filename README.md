@@ -8,7 +8,7 @@ command of DAQmx compatible products.
 [Python3.x][py] - Tested with `> 3.5 Win` , `3.4 Linux`
 
 ## Installation
-- Windows: `python -m pip install -r requirements.txt` |`pip install -r -r requirements.txt` <sup>[1]</sup>
+- Windows: `python -m pip install -r requirements.txt` | `pip install -r -r requirements.txt` <sup>[1]</sup>
 
 - Linux: `python3 -m pip install -r -r requirements.txt` | `pip3 install -r -r requirements.txt` <sup>[2]</sup>
 
@@ -29,6 +29,6 @@ misc as found.
 [1] - assuming you have `python` (and/or `pip`) as Python3 in your `%PATH%`
 
 [2] - assuming you have `python` (and/or `pip`) as Python2 in your `$PATH` already,
-as then Python 3 should be aliased to `python3`
+as then Python3 should be aliased to `python3`
     
 [py]:https://www.python.org/ "Python main page" 

@@ -1,40 +1,52 @@
 import sys
-from cmd import Cmd
+import cmd
 from datetime import datetime as dt
 import cmd_parser
+from contextlib import suppress
 
 
-class Shell(Cmd):
+class Shell(cmd.Cmd):
     def __init__(self):
         super(Shell, self).__init__()
         self.session = str(dt.today())
         self.prompt = 'DAQ-CLI > '
+        self.intro = '\nStarting Capture Tool. Type "help" or "?" to get a list of help commands \n'
         self.cli = cmd_parser.Cli()
 
-    def help_fin_read(self, *args, **kwargs):
+    def help_fin_read(self):
         self.cli.fin_parser.print_help()
+
+    def help_con_read(self):
+        self.cli.con_parser.print_help()
+
+    def help_view_data(self):
+        self.cli.view_parser.print_help()
+
+    def help_save_data(self):
+        self.cli.save_parser.print_help()
 
     def do_fin_read(self, *args):
         """reads finite amounts of data"""
-        cmd = self.cli.fin_parser.parse_args(args)
-        cmd.func(**vars(cmd))
+        with suppress(SystemExit):
+            command = self.cli.fin_parser.parse_args(args)
+            command.func(**vars(command))
 
     def do_con_read(self, *args):
         """reads continuously until canceled, output saved to file parameter"""
-        cmd = self.cli.con_parser.parse_args(args)
-        cmd.func(**vars(cmd))
-
-    def help_con_read(self, *args, **kwargs):
-        self.cli.con_parser.print_help()
+        with suppress(SystemExit):
+            command = self.cli.con_parser.parse_args(args)
+            command.func(**vars(command))
 
     def do_view_data(self, *args):
         """lets you view the contents of the current buffer"""
-        cmd = self.cli.view_parser.parse_args(args)
-        cmd.func(**vars(cmd))
+        with suppress(SystemExit):
+            command = self.cli.view_parser.parse_args(args)
+            command.func(**vars(command))
 
-    def help_view_data(self, *args, **kwargs):
-        self.cli.view_parser.print_help()
-
+    def do_save_data(self, *args):
+        with suppress(SystemExit):
+            command = self.cli.save_parser.parse_args(args)
+            command.func(**vars(command))
 
     def do_quit(self, flag):
         """Quits the program."""
@@ -59,10 +71,10 @@ class Shell(Cmd):
         if name != "":
             self.session = name
         else:
-            print(self.session)
+            print('\n'+self.session+'\n')
 
 
 if __name__ == '__main__':
     prompt = Shell()
-    prompt.cmdloop('Starting Capture Tool')
+    prompt.cmdloop()
     sys.exit(0)

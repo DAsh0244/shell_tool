@@ -16,11 +16,13 @@ class Cli:
         self.fin_parser = ReadParser('fin_read')
         self.con_parser = ReadParser('con_read')
         self.view_parser = ReadParser('view')
+        self.quit_parser = ReadParser('quit')
 
         """ Save data Parser """
         self.save_parser.add_argument('--version', action='version', version='0.0.1')
         self.save_parser.add_argument('file_name', type=str, action='store',
                                       help='file name to save current data as')
+        self.save_parser.set_defaults(func=daq.save)
 
         """ Finite Read Parser """
         self.fin_parser.add_argument('--version', action='version', version='0.0.1')
@@ -52,8 +54,9 @@ class Cli:
                                       help='view the last elements in the buffer')
         self.view_parser.set_defaults(func=daq.view)
 
-    #     quit_parser = self.subparsers.add_parser('quit')
-    #     quit_parser.add_argument('--confirm', action='store_true', default=False, help='exit CLI')
+        """" Quit Parser """
+        self.quit_parser.add_argument('-q', action='store_true', default=False, help='exit CLI')
+        self.quit_parser.add_argument('-f', type=str, action='store', help='exit CLI')
 
 if __name__ == '__main__':
     import os

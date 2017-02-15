@@ -6,11 +6,14 @@ from datetime import datetime as dt
 
 
 class Shell(Cmd):
+    version = "0.0.1 - 'Silly Name Here'"
+
     def __init__(self):
         super(Shell, self).__init__()
         self.session = str(dt.today())
         self.prompt = 'DAQ-CLI > '
-        self.intro = '\nStarting Capture Tool. Type "help" or "?" to get a list of help commands \n'
+        self.intro = 'DAQ-CLI v {}\nStarting Capture Tool.' \
+                     ' Type "help" or "?" to get a list of help commands \n'.format(Shell.version)
         self.cli = cmd_parser.Cli()
 
     def help_fin_read(self):
@@ -48,6 +51,7 @@ class Shell(Cmd):
             command = self.cli.save_parser.parse_args(args)
             command.func(**vars(command))
 
+    # TODO Make a proper quit parser
     def do_quit(self, flag):
         """
         Quit the program.
@@ -89,8 +93,27 @@ class Shell(Cmd):
             print('\n'+self.session+'\n')
 
     @staticmethod
-    def do_buffer_size(num):
-        cmd_parser.daq.data = cmd_parser.daq.np.array(num)
+    def do_version(*args, **kwargs):
+        """print version of shell"""
+        print(Shell.version)
+
+    @staticmethod
+    def do_buffer_size(num: int):
+        """check buffer size - if argument <num> passed, resize buffer to size num"""
+
+        if num == '':
+            print(len(cmd_parser.daq.data))
+        else:
+            try:
+                num = int(num)
+                buff_size = len(cmd_parser.daq.data)
+                if buff_size < num:
+                    cmd_parser.daq.data = cmd_parser.daq.np.concatenate([cmd_parser.daq.data,
+                                                                         cmd_parser.daq.np.zeros(num-buff_size)])
+                else:
+                    cmd_parser.daq.data = cmd_parser.daq.data[0:num]
+            except ValueError:
+                print('invalid input, [num] must be of type <int>')
 
 
 if __name__ == '__main__':

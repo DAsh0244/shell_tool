@@ -1,4 +1,3 @@
-
 sample_rate=10000.0
 samples=1000
 min=-10.0

@@ -25,8 +25,10 @@ def con_read(sample_rate=CON.sample_rate, samples=CON.samples, min=CON.min, max=
     print("Acquired {} points".format(read.value))
 
 
-def view(entries=10, tail=False):
+def view(entries, tail, *args, **kwargs):
+    if not entries:
+        entries = int(len(data)/3)
     if not tail:
-        print(data[0:entries])
+        print(data[0:int(entries)])
     else:
-        print(data[-entries])
+        print(data[-int(entries)])

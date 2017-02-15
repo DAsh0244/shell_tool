@@ -7,15 +7,20 @@ command of DAQmx compatible products.
 ##Requirements
 [Python3.x][py] - Tested with `> 3.5 Win` , `3.4 Linux`
 
+pip
+
 ## Installation
+
+Fetch dependencies: 
+
 - Windows: `python -m pip install -r requirements.txt` | `pip install -r -r requirements.txt` <sup>[1]</sup>
 
 - Linux: `python3 -m pip install -r -r requirements.txt` | `pip3 install -r -r requirements.txt` <sup>[2]</sup>
 
 - Mac: `N/A`
 
-## use 
-Stuff here eventually.
+## Use 
+Start it by launching `shell.py` with python.
 
 ##Todo - first Build
 - [x] Front End Functions

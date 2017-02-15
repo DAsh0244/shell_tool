@@ -1,11 +1,11 @@
 import sys
-import cmd
-from datetime import datetime as dt
+from cmd import Cmd
 import cmd_parser
 from contextlib import suppress
+from datetime import datetime as dt
 
 
-class Shell(cmd.Cmd):
+class Shell(Cmd):
     def __init__(self):
         super(Shell, self).__init__()
         self.session = str(dt.today())
@@ -49,7 +49,22 @@ class Shell(cmd.Cmd):
             command.func(**vars(command))
 
     def do_quit(self, flag):
-        """Quits the program."""
+        """
+        Quit the program.
+
+        Usage:
+        quit [-q] [-y  FILENAME]
+
+        Options:
+        -q      force quit with no prompt to save (will NOT save current buffer(s) contents
+        -y      confirm save and exit with save filename being the string passed in the FILENAME field
+        """
+        """"
+        Example call:
+        quit                    before exit ask user if wanting to save contents of buffer(s) to file
+        quit -q                 force quit
+        quit -y test_run.txt    before exit save contents of buffer(s) to file(s) named 'test_run.txt'
+        """
         if flag == "":
             save = input('save contents of session to file? (y/n)  ')
             if save.lower == 'y':
@@ -58,7 +73,7 @@ class Shell(cmd.Cmd):
                     f.write('asdf')
         else:
             try:
-                if flag.lower == '-y':
+                if flag.lower == '-q':
                     with open('{}.txt'.format(self.session), mode='w') as f:
                         f.write(self.cli.get_data())
                         f.write('asdf')
@@ -72,6 +87,10 @@ class Shell(cmd.Cmd):
             self.session = name
         else:
             print('\n'+self.session+'\n')
+
+    @staticmethod
+    def do_buffer_size(num):
+        cmd_parser.daq.data = cmd_parser.daq.np.array(num)
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 
-_sample_rate=10000.0
-_samples=1000
-_min=-10.0
-_max=10.0
-_BUFSIZE = int(5000)
+sample_rate=10000.0
+samples=1000
+min=-10.0
+max=10.0
+BUFSIZE = int(5000)

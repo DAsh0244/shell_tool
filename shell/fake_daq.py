@@ -2,14 +2,14 @@ import numpy as np
 # from constants import *
 import constants as CON
 
-data = np.zeros(CON._BUFSIZE, dtype=np.float64)
+data = np.zeros(CON.BUFSIZE, dtype=np.float64)
 
 
-def fin_read(samples=CON._samples, sample_rate=CON._sample_rate, min=CON._min, max=CON._max, *args, **kwargs):
+def fin_read(samples=CON.samples, sample_rate=CON.sample_rate, min=CON.min, max=CON.max, *args, **kwargs):
     print("Acquired {} points".format(samples))
 
 
-def con_read(sample_rate=CON._sample_rate, min=CON._min, max=CON._max, *args, **kwargs):
+def con_read(sample_rate=CON.sample_rate, min=CON.min, max=CON.max, *args, **kwargs):
     print("Acquired {} points".format(sample_rate))
 
 

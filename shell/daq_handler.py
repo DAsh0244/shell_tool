@@ -1,12 +1,11 @@
 import numpy as np
 from PyDAQmx import *
+import constants as CON
+data = np.zeros(CON.BUFSIZE, dtype=np.float64)
+time = np.zeros(CON.BUFSIZE, dtype=np.float64)
 
-from constants import *
 
-data = np.zeros(BUFSIZE, dtype=np.float64)
-
-
-def fin_read(sample_rate=sample_rate_, samples=samples_,min=min_,max=max_):
+def fin_read(sample_rate=CON.sample_rate, samples=CON.samples, min=CON.min, max=CON.max):
     analog_input = Task()
     read = int32()
     analog_input.CreateAIVoltageChan("Dev1/ai0","",DAQmx_Val_Cfg_Default,min,max,DAQmx_Val_Volts,None)
@@ -16,7 +15,7 @@ def fin_read(sample_rate=sample_rate_, samples=samples_,min=min_,max=max_):
     print("Acquired {} points".format(read.value))
 
 
-def con_read(sample_rate=sample_rate_, samples=samples_,min=min_,max=max_):
+def con_read(sample_rate=CON.sample_rate, samples=CON.samples, min=CON.min, max=CON.max):
     analog_input = Task()
     read = int32()
     analog_input.CreateAIVoltageChan("Dev1/ai0","",DAQmx_Val_Cfg_Default,min,max,DAQmx_Val_Volts,None)

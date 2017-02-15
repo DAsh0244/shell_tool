@@ -24,29 +24,29 @@ class Cli:
 
         """ Finite Read Parser """
         self.fin_parser.add_argument('--version', action='version', version='0.0.1')
-        self.fin_parser.add_argument('samples', type=int, action='store', default=CON._samples,
-                                     help='number of samples to read in a given run (default: {})'.format(CON._samples))
-        self.fin_parser.add_argument('--sample_rate', type=float, action='store', nargs='?', const=CON._sample_rate,
-                                     help='set sample rate (Hz) for the DAQ (default: {})'.format(CON._sample_rate))
-        self.fin_parser.add_argument('--min', type=float, const=CON._min, nargs='?', action='store',
-                                     help='minimum input voltage (default: {})'.format(CON._min))
-        self.fin_parser.add_argument('--max', type=float, const=CON._max, nargs='?', action='store',
-                                     help='maximum input voltage (default: {})'.format(CON._max))
+        self.fin_parser.add_argument('samples', type=int, action='store', default=CON.samples,
+                                     help='number of samples to read in a given run (default: {})'.format(CON.samples))
+        self.fin_parser.add_argument('--sample_rate', type=float, action='store', nargs='?', const=CON.sample_rate,
+                                     help='set sample rate (Hz) for the DAQ (default: {})'.format(CON.sample_rate))
+        self.fin_parser.add_argument('--min', type=float, const=CON.min, nargs='?', action='store',
+                                     help='minimum input voltage (default: {})'.format(CON.min))
+        self.fin_parser.add_argument('--max', type=float, const=CON.max, nargs='?', action='store',
+                                     help='maximum input voltage (default: {})'.format(CON.max))
         self.fin_parser.set_defaults(func=daq.fin_read)
 
         """ Continuous Read Parser """
         self.con_parser.add_argument('--version', action='version', version='0.0.1')
-        self.con_parser.add_argument('--sample_rate', type=float, action='store', nargs='?', const=CON._sample_rate,
-                                     help='set sample rate (Hz) for the DAQ (default: {})'.format(CON._sample_rate))
-        self.con_parser.add_argument('--min', type=float, const=CON._min, nargs='?', action='store',
-                                     help='minimum input voltage (default: {})'.format(CON._min))
-        self.con_parser.add_argument('--max', type=float, const=CON._max, nargs='?', action='store',
-                                     help='maximum input voltage (default: {})'.format(CON._max))
+        self.con_parser.add_argument('--sample_rate', type=float, action='store', nargs='?', const=CON.sample_rate,
+                                     help='set sample rate (Hz) for the DAQ (default: {})'.format(CON.sample_rate))
+        self.con_parser.add_argument('--min', type=float, const=CON.min, nargs='?', action='store',
+                                     help='minimum input voltage (default: {})'.format(CON.min))
+        self.con_parser.add_argument('--max', type=float, const=CON.max, nargs='?', action='store',
+                                     help='maximum input voltage (default: {})'.format(CON.max))
         self.con_parser.set_defaults(func=daq.con_read)
 
         """ View Parser """
         self.view_parser.add_argument('--version', action='version', version='0.0.1')
-        self.view_parser.add_argument('entries', action='store', default=CON._BUFSIZE,
+        self.view_parser.add_argument('entries', action='store', default=CON.BUFSIZE,
                                       help='how many entries in buffer to view')
         self.view_parser.add_argument('--tail', action='store_true',
                                       help='view the last elements in the buffer')

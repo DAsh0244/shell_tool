@@ -103,18 +103,12 @@ class Shell(Cmd):
     @staticmethod
     def do_buffer_size(num: int):
         """check buffer size - if argument <num> passed, resize buffer to size num"""
-
         if num == '':
             print(len(cmd_parser.daq.data))
         else:
             try:
-                num = int(num)
-                buff_size = len(cmd_parser.daq.data)
-                if buff_size < num:
-                    cmd_parser.daq.data = cmd_parser.daq.np.concatenate([cmd_parser.daq.data,
-                                                                         cmd_parser.daq.np.zeros(num-buff_size)])
-                else:
-                    cmd_parser.daq.data = cmd_parser.daq.data[0:num]
+                # TODO support rest of args to buffer resize
+                cmd_parser.daq.buffer_resize(num)
             except ValueError:
                 print('invalid input, [num] must be of type <int>')
 

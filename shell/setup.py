@@ -1,15 +1,16 @@
 # from setuptools import setup
 #
-# import  intrepreter
+# import  shell
 # setup(
-#     name='intrepreter',
-#     version='0.1',
-#     py_modules=['intrepreter'],
+#     name='DAQ-CLI',
+#     version=shell.Shell.version,
+#     py_modules=['shell'],
 #     install_requires=[
-#         'Click',
+#         'PyDAQmx',
+#         'numpy',
 #     ],
 #     entry_points='''
 #         [console_scripts]
-#         intrepreter=intrepreter:cli
+#
 #     ''',
 # )

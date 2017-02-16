@@ -43,7 +43,10 @@ class Shell(Cmd):
     def do_view_data(self, *args):
         """lets you view the contents of the current buffer"""
         with suppress(SystemExit):
-            command = self.cli.view_parser.parse_args(args)
+            if str(*args).split(' ')[0] == '':
+                command = self.cli.view_parser.parse_args(*args)
+            else:
+                command = self.cli.view_parser.parse_args(str(*args).split(' '))
             command.func(**vars(command))
 
     def do_save_data(self, *args):

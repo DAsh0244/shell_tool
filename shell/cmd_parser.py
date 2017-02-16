@@ -48,9 +48,9 @@ class Cli:
 
         """ View Parser """
         self.view_parser.add_argument('--version', action='version', version='0.0.1')
-        self.view_parser.add_argument('entries', action='store', default=CON.BUFSIZE,
+        self.view_parser.add_argument('entries', type=int, action='store', default=CON.BUFSIZE,
                                       help='how many entries in buffer to view')
-        self.view_parser.add_argument('--tail', action='store_true',
+        self.view_parser.add_argument('--tail', action="store_true", default=False,
                                       help='view the last elements in the buffer')
         self.view_parser.set_defaults(func=daq.view)
 

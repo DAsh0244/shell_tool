@@ -19,4 +19,3 @@ doskey dct="%home%\venv\Scripts\deactivate.bat $*"
 echo 'q' for quit
 doskey q=exit $*
 
-

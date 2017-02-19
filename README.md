@@ -13,9 +13,9 @@ pip
 
 Fetch dependencies: 
 
-- Windows: `python -m pip install -r requirements.txt` | `pip install -r -r requirements.txt` <sup>[1]</sup>
+- Windows: `python -m pip install -r requirements.txt` | `pip install -r requirements.txt` <sup>[1]</sup>
 
-- Linux: `python3 -m pip install -r -r requirements.txt` | `pip3 install -r -r requirements.txt` <sup>[2]</sup>
+- Linux: `python3 -m pip install -r requirements.txt` | `pip3 install -r requirements.txt` <sup>[2]</sup>
 
 - Mac: `N/A`
 

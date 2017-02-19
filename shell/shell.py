@@ -79,12 +79,11 @@ class Shell(Cmd):
                     f.write(self.cli.get_data())
                     f.write('asdf')
         else:
-            try:
-                if flag.lower == '-q':
-                    with open('{}.txt'.format(self.session), mode='w') as f:
-                        f.write(self.cli.get_data())
-                        f.write('asdf')
-            except:
+            if flag.lower == '-q':
+                with open('{}.txt'.format(self.session), mode='w') as f:
+                    f.write(self.cli.get_data())
+                    f.write('asdf')
+            else:
                 pass
         raise SystemExit
 
@@ -114,6 +113,7 @@ class Shell(Cmd):
 
 
 if __name__ == '__main__':
+    """ run shell """
     prompt = Shell()
     prompt.cmdloop()
     sys.exit(0)

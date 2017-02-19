@@ -62,8 +62,11 @@ class Cli:
         """" Quit Parser """
         self.quit_parser.add_argument('-q', action='store_true', default=False, help='exit CLI')
         self.quit_parser.add_argument('-f', type=str, action='store', help='exit CLI')
+        # self.quit_parser.set_defaults(func=daq.save)
 
 if __name__ == '__main__':
+    """ Testing for each parser """
+    # todo - automate testing in a seperate file?
     import os
     import sys
     cli = Cli()
@@ -71,11 +74,16 @@ if __name__ == '__main__':
     args.func(**vars(args))
 
     os.system('pause')
-    args = cli.con_parser.parse_args(['--sample_rate_','12'])
+    args = cli.con_parser.parse_args(['--sample_rate_', '12'])
     args.func(**vars(args))
 
     os.system('pause')
     args = cli.view_parser.parse_args(['12'])
     args.func(**vars(args))
+
+    os.system('pause')
+    args = cli.quit_parser.parse_args(['-q'])
+    # args.func(**vars(args))
+    print(**vars(args))
 
     sys.exit(0)

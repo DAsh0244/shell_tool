@@ -7,13 +7,15 @@ data = np.zeros(CON.buf_size_, dtype=np.float64)
 time = np.zeros(CON.buf_size_, dtype=np.float64)
 
 
-def buffer_resize(data_size, _dtype=np.float64, maintain=False):
+def buffer_resize(data_size, _dtype=np.float64, maintain=True):
     global data, time
+    if _dtype != data.dtype:
+        data = data.astype(_dtype)
     if maintain:
         buff_size = len(data)
         if buff_size > data_size:
-            data = np.concatenate([data, np.zeros(data_size-buff_size)], _dtype=data.dtype)
-            time = np.concatenate([time, np.zeros(data_size-buff_size)], _dtype=time.dtype)
+            data = np.concatenate([data, np.zeros(data_size-buff_size, dtype=data.dtype)])
+            time = np.concatenate([time, np.zeros(data_size-buff_size, dtype=time.dtype)])
         else:
             data = data[0:data_size]
             time = time[0:data_size]
@@ -25,8 +27,8 @@ def buffer_resize(data_size, _dtype=np.float64, maintain=False):
 def fin_read(sample_rate=CON.sample_rate_, samples=CON.samples_, min=CON.min_, max=CON.max_):
     analog_input = Task()
     read = int32()
-    analog_input.CreateAIVoltageChan("Dev1/ai0","",DAQmx_Val_Cfg_Default,min,max,DAQmx_Val_Volts,None)
-    analog_input.CfgSampClkTiming("",sample_rate,DAQmx_Val_Rising,DAQmx_Val_FiniteSamps,samples)
+    analog_input.CreateAIVoltageChan("Dev1/ai0", "", DAQmx_Val_Cfg_Default, min, max, DAQmx_Val_Volts,None)
+    analog_input.CfgSampClkTiming("", sample_rate, DAQmx_Val_Rising,DAQmx_Val_FiniteSamps, samples)
     analog_input.StartTask()
     analog_input.ReadAnalogF64(samples, 10.0, DAQmx_Val_GroupByChannel, data, len(data), byref(read), None)
     print("Acquired {} points".format(read.value))
@@ -35,8 +37,8 @@ def fin_read(sample_rate=CON.sample_rate_, samples=CON.samples_, min=CON.min_, m
 def con_read(sample_rate=CON.sample_rate_, samples=CON.samples_, min=CON.min_, max=CON.max_):
     analog_input = Task()
     read = int32()
-    analog_input.CreateAIVoltageChan("Dev1/ai0","",DAQmx_Val_Cfg_Default,min,max,DAQmx_Val_Volts,None)
-    analog_input.CfgSampClkTiming("",sample_rate,DAQmx_Val_Rising,DAQmx_Val_FiniteSamps,samples)
+    analog_input.CreateAIVoltageChan("Dev1/ai0", "", DAQmx_Val_Cfg_Default, min, max, DAQmx_Val_Volts, None)
+    analog_input.CfgSampClkTiming("", sample_rate, DAQmx_Val_Rising, DAQmx_Val_FiniteSamps, samples)
     analog_input.StartTask()
     analog_input.ReadAnalogF64(samples, 10.0, DAQmx_Val_GroupByChannel, data, len(data), byref(read), None)
     print("Acquired {} points".format(read.value))

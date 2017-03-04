@@ -22,15 +22,17 @@ def buffer_resize(data_size, _dtype=np.float64, maintain=False):
         time = np.zeros(data_size, _dtype)
 
 
-def fin_read(samples=CON.samples_, sample_rate=CON.sample_rate_,
-             min=CON.min_, max=CON.max_, expand=False, *args, **kwargs):
+def fin_read(samples, sample_rate=CON.sample_rate_,
+             min=CON.min_, max=CON.max_, expand=True, *args, **kwargs):
     global data, time  # -- may be needed?
     time_step = 1.0 / sample_rate
     if samples > len(data):
         if not expand:
             samples = len(data)
+            print('truncated')
         else:
-            data = np.zeros(samples, dtype=np.float64)
+            buffer_resize(samples)
+            print('extended')
     for i in range(0, samples):
         data[i] = random.randint(1, 12)
     for i in range(1, samples):
@@ -50,12 +52,23 @@ def view(entries: int, tail: bool, *args, **kwargs):
         print(data[0:int(entries)])
 
 
-def save(path, filename, extension):
+def get_path():
+    import os
+    path = './'
+    try:
+        path = os.path.join(os.getcwd(), 'OUTPUT')
+    except FileNotFoundError:
+        os.mkdir('OUTPUT')
+        path = os.path.join(os.getcwd(), 'OUTPUT')
+    return path
+
+def save(file_name, path=get_path(), *args, **kwargs):
+    filename, extension = file_name.split('.')
     key = data.dtype.name
-    delim_dict = {'.txt': ' ',
-                  '.mat': ' ',
-                  '.csv': ',',
-                  '.gz' : ' '
+    delim_dict = {'txt': ' ',
+                  'mat': ' ',
+                  'csv': ',',
+                  'gz' : ' '
                   }
     fmt_dict = {'float64': '%.18e',
                 'float32': '%.9e',
@@ -64,5 +77,7 @@ def save(path, filename, extension):
                 # 'int64'  : '',
                 # 'int': '',
                 }
-    np.savetxt(os.path.join(path, filename) + extension, data,
+    np.savetxt(os.path.join(path, filename) + '.' + extension, data,
+               delimiter=delim_dict[extension], fmt=fmt_dict.get(key, '%.18e'))
+    np.savetxt(os.path.join(path, filename)+ '_t.' + extension, time,
                delimiter=delim_dict[extension], fmt=fmt_dict.get(key, '%.18e'))

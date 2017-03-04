@@ -25,7 +25,7 @@ class Shell(Cmd):
     def help_view_data(self):
         self.cli.view_parser.print_help()
 
-    def help_save_data(self):
+    def help_save(self):
         self.cli.save_parser.print_help()
 
     def do_fin_read(self, *args):
@@ -49,7 +49,7 @@ class Shell(Cmd):
                 command = self.cli.view_parser.parse_args(str(*args).split(' '))
             command.func(**vars(command))
 
-    def do_save_data(self, *args):
+    def do_save(self, *args):
         with suppress(SystemExit):
             command = self.cli.save_parser.parse_args(args)
             command.func(**vars(command))

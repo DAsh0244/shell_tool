@@ -2,6 +2,7 @@ import argparse
 # import daq_handler as daq
 import fake_daq as daq
 import constants as CON
+import os
 
 
 class ReadParser(argparse.ArgumentParser):
@@ -31,9 +32,9 @@ class Cli:
 
         """ Finite Read Parser """
         self.fin_parser.add_argument('--version', action='version', version='0.0.1')
-        self.fin_parser.add_argument('samples_', type=int, action='store', default=CON.samples_,
+        self.fin_parser.add_argument('samples', type=int, action='store', default=CON.samples_,
                                      help='number of samples_ to read in a given run (default: {})'.format(CON.samples_))
-        self.fin_parser.add_argument('--sample_rate_', type=float, action='store', nargs='?', default=CON.sample_rate_,
+        self.fin_parser.add_argument('--sample_rate', type=float, action='store', nargs='?', default=CON.sample_rate_,
                                      help='set sample rate (Hz) for the DAQ (default: {})'.format(CON.sample_rate_))
         self.fin_parser.add_argument('--min_', type=float, default=CON.min_, nargs='?', action='store',
                                      help='minimum input voltage (default: {})'.format(CON.min_))

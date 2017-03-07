@@ -52,7 +52,7 @@ class Shell(Cmd):
 
     def do_save(self, *args):
         with suppress(SystemExit):
-            command = self.cli.save_parser.parse_args(args)
+            command = self.cli.save_parser.parse_args(str(*args).split(' '))
             command.func(**vars(command))
 
     # TODO Make a proper quit parser
@@ -76,14 +76,10 @@ class Shell(Cmd):
         if flag == "":
             save = input('save contents of session to file? (y/n)  ')
             if save.lower == 'y':
-                with open('{}.txt'.format(self.session), mode='w') as f:
-                    f.write(self.cli.get_data())
-                    f.write('asdf')
+                self.cli.save_parser.parse_args([self.session+'.txt'])
         else:
             if flag.lower == '-q':
-                with open('{}.txt'.format(self.session), mode='w') as f:
-                    f.write(self.cli.get_data())
-                    f.write('asdf')
+                self.cli.save_parser.parse_args([self.session+'.txt'])
             else:
                 pass
         raise SystemExit
@@ -102,7 +98,15 @@ class Shell(Cmd):
 
     @staticmethod
     def do_buffer_size(num: int):
-        """check buffer size - if argument <num> passed, resize buffer to size num"""
+        """
+        Check buffer size - if argument [num] passed, resize buffer to size num
+
+        Usage:
+        buffer_size [num]
+
+        Options:
+        [num] -- size to make the buffer
+        """
         if num == '':
             print(len(cmd_parser.daq.data))
         else:

@@ -19,8 +19,8 @@ def buffer_resize(data_size, _dtype=np.float64, maintain=False):
     if maintain:
         buff_size = len(data)
         if buff_size > data_size:
-            data = np.concatenate([data, np.zeros(data_size-buff_size)], _dtype=data.dtype)
-            time = np.concatenate([time, np.zeros(data_size-buff_size)], _dtype=time.dtype)
+            data = np.concatenate([data, np.zeros(data_size-buff_size, dtype=data.dtype)])
+            time = np.concatenate([time, np.zeros(data_size-buff_size, dtype=time.dtype)])
         else:
             data = data[0:data_size]
             time = time[0:data_size]
@@ -88,6 +88,5 @@ def save(file_name, path=get_path(), *args, **kwargs):
                 }
     np.savetxt(os.path.join(path, filename) + '.' + extension, data,
                delimiter=delim_dict[extension], fmt=fmt_dict.get(key, '%.18e'))
-    with open(os.path.join(path, filename) + '_t.' + extension, 'w') as time_file:
-        for i in range(0, time.entries):
-            time_file.write('{:.7f}\n'.format(time[i]))
+    np.savetxt(os.path.join(path, filename)+ '_t.' + extension, time,
+               delimiter=delim_dict[extension], fmt=fmt_dict.get(key, '%.18e'))

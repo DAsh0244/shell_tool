@@ -31,12 +31,14 @@ def buffer_resize(data_size, _dtype=np.float64, maintain=True):
 
 
 def fin_read(sample_rate=CON.sample_rate_, samples=CON.samples_, min=CON.min_, max=CON.max_):
+
+    timeout = ceil(samples * (1.0/sample_rate))
     analog_input = Task()
     read = int32()
     analog_input.CreateAIVoltageChan("Dev1/ai0", "", DAQmx_Val_Cfg_Default, min, max, DAQmx_Val_Volts,None)
     analog_input.CfgSampClkTiming("", sample_rate, DAQmx_Val_Rising,DAQmx_Val_FiniteSamps, samples)
     analog_input.StartTask()
-    analog_input.ReadAnalogF64(samples, 10.0, DAQmx_Val_GroupByChannel, data, len(data), byref(read), None)
+    analog_input.ReadAnalogF64(samples, timeout, DAQmx_Val_GroupByChannel, data, len(data), byref(read), None)
     print("Acquired {} points".format(read.value))
 
 

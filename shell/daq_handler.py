@@ -2,10 +2,11 @@ import numpy as np
 from PyDAQmx import *
 import constants as CON
 import os
-
+from timer import Timer
 
 data = np.zeros(CON.buf_size_, dtype=np.float64)
-time = CON.Time(length=len(data), time_step=1.0/CON.sample_rate_, initial=0.0)
+time = Timer(0, CON.sample_rate_, CON.buf_size_)
+# time = CON.Time(length=len(data), time_step=1.0/CON.sample_rate_, initial=0.0)
 '''
 for index[i]  time[i] = time[0] + i*time_step
 '''

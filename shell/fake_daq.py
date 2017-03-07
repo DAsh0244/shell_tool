@@ -4,7 +4,12 @@ import random
 import os
 
 data = np.zeros(CON.buf_size_, dtype=np.float64)
-time = np.zeros(CON.buf_size_, dtype=np.float64)
+# time = np.zeros(CON.buf_size_, dtype=np.float64)
+# time = CON.Time(length=len(data), time_step=1.0/CON.sample_rate_, initial=0.0)
+
+'''
+for index[i]  time[i] = time[0] + i*time_step
+'''
 
 
 def buffer_resize(data_size, _dtype=np.float64, maintain=False):
@@ -25,7 +30,6 @@ def buffer_resize(data_size, _dtype=np.float64, maintain=False):
 def fin_read(samples, sample_rate=CON.sample_rate_,
              min=CON.min_, max=CON.max_, expand=True, *args, **kwargs):
     global data, time  # -- may be needed?
-    time_step = 1.0 / sample_rate
     if samples > len(data):
         if not expand:
             samples = len(data)
@@ -35,8 +39,8 @@ def fin_read(samples, sample_rate=CON.sample_rate_,
             print('extended')
     for i in range(0, samples):
         data[i] = random.randint(1, 12)
-    for i in range(1, samples):
-        time[i] = time[i-1] + time_step
+    # for i in range(1, samples):
+    #     time[i] = time[i-1] + time_step
     print("Acquired {} points".format(samples))
     print('Time taken: {} seconds'.format(time[samples - 1]))
 
@@ -79,5 +83,8 @@ def save(file_name, path=get_path(), *args, **kwargs):
                 }
     np.savetxt(os.path.join(path, filename) + '.' + extension, data,
                delimiter=delim_dict[extension], fmt=fmt_dict.get(key, '%.18e'))
-    np.savetxt(os.path.join(path, filename)+ '_t.' + extension, time,
-               delimiter=delim_dict[extension], fmt=fmt_dict.get(key, '%.18e'))
+    with open(os.path.join(path, filename) + '_t.' + extension, 'w') as time_file:
+        temp_time = time.initial
+        for i in range(0, len(data)):
+            time_file.write('{:.18e}'.format(temp_time))
+            temp_time += time.time_step

@@ -1,8 +1,12 @@
+# -*- coding: utf-8 -*-
 import argparse
-# import daq_handler as daq
-import fake_daq as daq
 import constants as CON
 import os
+
+if CON.FAKE:
+    import fake_daq as daq
+else:
+    import daq_handler as daq
 
 
 class ReadParser(argparse.ArgumentParser):

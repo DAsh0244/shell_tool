@@ -1,10 +1,16 @@
 import numpy as np
 from PyDAQmx import *
 import constants as CON
-
+import os
+from timer import Timer
 
 data = np.zeros(CON.buf_size_, dtype=np.float64)
-time = np.zeros(CON.buf_size_, dtype=np.float64)
+time = Timer(0, CON.sample_rate_, CON.buf_size_)
+# time = CON.Time(length=len(data), time_step=1.0/CON.sample_rate_, initial=0.0)
+'''
+for index[i]  time[i] = time[0] + i*time_step
+'''
+# time = np.zeros(CON.buf_size_, dtype=np.float64)
 
 
 def buffer_resize(data_size, _dtype=np.float64, maintain=True):
@@ -15,13 +21,13 @@ def buffer_resize(data_size, _dtype=np.float64, maintain=True):
         buff_size = len(data)
         if buff_size > data_size:
             data = np.concatenate([data, np.zeros(data_size-buff_size, dtype=data.dtype)])
-            time = np.concatenate([time, np.zeros(data_size-buff_size, dtype=time.dtype)])
+            # time = np.concatenate([time, np.zeros(data_size-buff_size, dtype=time.dtype)])
         else:
             data = data[0:data_size]
-            time = time[0:data_size]
+            # time = time[0:data_size]
     else:
         data = np.zeros(data_size, _dtype)
-        time = np.zeros(data_size, _dtype)
+        # time = np.zeros(data_size, _dtype)
 
 
 def fin_read(sample_rate=CON.sample_rate_, samples=CON.samples_, min=CON.min_, max=CON.max_):
@@ -65,5 +71,12 @@ def save(path, filename, extension):
                 # 'int64'  : '',
                 # 'int': '',
                 }
+    #  TODO: Data blocking for multiple smaller files
     np.savetxt(os.path.join(path, filename) + extension, data,
                delimiter=delim_dict[extension], fmt=fmt_dict.get(key, '%.18e'))
+    with open(os.path.join(path, filename) + '_t.' + extension, 'w') as time_file:
+        temp_time = time.initial
+        for i in range(0, len(data)):
+            time_file.write('{:.18e}'.format(temp_time))
+            temp_time += time.time_step
+

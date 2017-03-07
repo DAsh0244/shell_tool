@@ -1,12 +1,13 @@
+# -*- coding: utf-8 -*-
 import sys
 from cmd import Cmd
-import cmd_parser
 from contextlib import suppress
 from datetime import datetime as dt
+import cmd_parser
 
 
 class Shell(Cmd):
-    version = "0.0.1 - 'Silly Name Here'"
+    version = "0.0.2 - 'Silly Name Here'"
 
     def __init__(self):
         super(Shell, self).__init__()
@@ -31,7 +32,7 @@ class Shell(Cmd):
     def do_fin_read(self, *args):
         """reads finite amounts of data"""
         with suppress(SystemExit):
-            command = self.cli.fin_parser.parse_args(args)
+            command = self.cli.fin_parser.parse_args(str(*args).split(' '))
             command.func(**vars(command))
 
     def do_con_read(self, *args):
@@ -107,7 +108,7 @@ class Shell(Cmd):
         else:
             try:
                 # TODO support rest of args to buffer resize
-                cmd_parser.daq.buffer_resize(num)
+                cmd_parser.daq.buffer_resize(int(num))
             except ValueError:
                 print('invalid input, [num] must be of type <int>')
 

@@ -1,8 +1,13 @@
+# -*- coding: utf-8 -*-
 import argparse
-# import daq_handler as daq
-import fake_daq as daq
 import constants as CON
-import os
+import sys
+try:
+    if str(sys.argv[1]).upper() == 'FAKE':
+        import fake_daq as daq
+        print('running in fake daq mode')
+except:
+    import daq_handler as daq
 
 
 class ReadParser(argparse.ArgumentParser):

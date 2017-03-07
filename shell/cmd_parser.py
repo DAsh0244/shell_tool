@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 import argparse
 import constants as CON
-import os
-
-if CON.FAKE:
-    import fake_daq as daq
-else:
+import sys
+try:
+    if str(sys.argv[1]).upper() == 'FAKE':
+        import fake_daq as daq
+        print('running in fake daq mode')
+except:
     import daq_handler as daq
 
 

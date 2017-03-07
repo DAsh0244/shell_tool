@@ -7,4 +7,16 @@ class Timer(object):
         self.current_time = start
 
     def __getitem__(self, index):
-        return self._start + (index * self._time_step)
+        try:
+            if index >= 0:
+                return self._start + (index * self._time_step)
+            else:
+                return (self.entries * self._time_step) - (self._time_step * (index + 1))
+        except Exception as e:
+            return e
+
+    def __repr__(self):
+        obj = []
+        for i in range(0, self.entries):
+            obj.append(self.__getitem__(i))
+        return obj

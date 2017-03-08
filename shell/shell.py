@@ -12,10 +12,16 @@ class Shell(Cmd):
     def __init__(self):
         super(Shell, self).__init__()
         self.session = str(dt.today())
-        self.prompt = 'DAQ-CLI > '
+
         self.intro = 'DAQ-CLI v {}\nStarting Capture Tool.' \
                      ' Type "help" or "?" to get a list of help commands \n'.format(Shell.version)
         self.cli = cmd_parser.Cli()
+        try:
+            if cmd_parser.daq.FAKE:
+                self.prompt = '(FAKE) DAQ-CLI > '
+                # del cmd_parser.daq.FAKE
+        except AttributeError:  # if FAKE doesnt exist
+            self.prompt = 'DAQ_CLI > '
 
     def help_fin_read(self):
         self.cli.fin_parser.print_help()

@@ -20,3 +20,4 @@ echo 'q' for quit
 doskey q=exit $*
 
 
+cd ..

@@ -4,7 +4,8 @@ import constants as CON
 import os
 from timer import Timer
 
-data = np.zeros(CON.buf_size_, dtype=np.float64)
+# data = np.zeros(CON.buf_size_, dtype=np.float64)
+data = np.zeros(0, dtype=np.float64)
 time = Timer(0, CON.sample_rate_, CON.buf_size_)
 # time = CON.Time(length=len(data), time_step=1.0/CON.sample_rate_, initial=0.0)
 '''
@@ -13,7 +14,7 @@ for index[i]  time[i] = time[0] + i*time_step
 # time = np.zeros(CON.buf_size_, dtype=np.float64)
 
 
-def buffer_resize(data_size, _dtype=np.float64, maintain=True):
+def buffer_resize(data_size, _dtype=np.float64, maintain=False, *args, **kwargs):
     global data, time
     if _dtype != data.dtype:
         data = data.astype(_dtype)
@@ -30,9 +31,17 @@ def buffer_resize(data_size, _dtype=np.float64, maintain=True):
         # time = np.zeros(data_size, _dtype)
 
 
-def fin_read(sample_rate=CON.sample_rate_, samples=CON.samples_, min=CON.min_, max=CON.max_):
-
+def fin_read(sample_rate=CON.sample_rate_, samples=CON.samples_, min=CON.min_, max=CON.max_, expand=True, *args, **kwargs):
+    from math import ceil
     timeout = ceil(samples * (1.0/sample_rate))
+    buf_size = len(data)
+    if samples > buf_size:
+        if not expand:
+            # samples = buf_size
+            print('truncated')
+        else:
+            buffer_resize(samples)
+            # print('extended')
     analog_input = Task()
     read = int32()
     analog_input.CreateAIVoltageChan("Dev1/ai0", "", DAQmx_Val_Cfg_Default, min, max, DAQmx_Val_Volts,None)
@@ -42,7 +51,7 @@ def fin_read(sample_rate=CON.sample_rate_, samples=CON.samples_, min=CON.min_, m
     print("Acquired {} points".format(read.value))
 
 
-def con_read(sample_rate=CON.sample_rate_, samples=CON.samples_, min=CON.min_, max=CON.max_):
+def con_read(sample_rate=CON.sample_rate_, samples=CON.samples_, min=CON.min_, max=CON.max_, *args, **kwargs):
     analog_input = Task()
     read = int32()
     analog_input.CreateAIVoltageChan("Dev1/ai0", "", DAQmx_Val_Cfg_Default, min, max, DAQmx_Val_Volts, None)
@@ -56,10 +65,21 @@ def view(entries: int, tail: bool, *args, **kwargs):
     if tail:
         print(data[-int(entries):])
     else:
-        print(data[0:int(entries)])
+        print(data[0:int(entries)])  
+   
 
-
-def save(path, filename, extension):
+def get_path():
+    import os
+    path = './'
+    try:
+        path = os.path.join(os.getcwd(), 'OUTPUT')
+    except FileNotFoundError:
+        os.mkdir('OUTPUT')
+        path = os.path.join(os.getcwd(), 'OUTPUT')
+    return path
+   
+def save(file_name, path=get_path(), *args, **kwargs):
+    filename, extension = file_name.split('.')
     key = data.dtype.name
     delim_dict = {'.txt': ' ',
                   '.mat': ' ',

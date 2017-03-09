@@ -81,10 +81,10 @@ def get_path():
 def save(file_name, path=get_path(), *args, **kwargs):
     filename, extension = file_name.split('.')
     key = data.dtype.name
-    delim_dict = {'.txt': ' ',
-                  '.mat': ' ',
-                  '.csv': ',',
-                  '.gz' : ' '
+    delim_dict = {'txt': ' ',
+                  'mat': ' ',
+                  'csv': ',',
+                  'gz' : ' '
                   }
     fmt_dict = {'float64': '%.18e',
                 'float32': '%.9e',

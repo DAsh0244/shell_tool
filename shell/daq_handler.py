@@ -8,19 +8,19 @@ data = np.zeros(0, dtype=np.float64)
 time = Timer(0, CON.sample_rate_, 0)
 
 
-def buffer_resize(data_size, _dtype=np.float64, maintain=False):
+def buffer_resize(data_size, _dtype=np.float64, maintain=False, *args, **kwargs):
     global data, time
     if maintain:
         buff_size = len(data)
         if buff_size > data_size:
             data = np.concatenate([data, np.zeros(data_size-buff_size, dtype=data.dtype)])
-            time = np.concatenate([time, np.zeros(data_size-buff_size, dtype=time.dtype)])
+            # time = np.concatenate([time, np.zeros(data_size-buff_size, dtype=time.dtype)])
         else:
             data = data[0:data_size]
-            time = time[0:data_size]
+            # time = time[0:data_size]
     else:
         data = np.zeros(data_size, _dtype)
-        time = np.zeros(data_size, _dtype)
+        # time = np.zeros(data_size, _dtype)
 
 
 def fin_read(samples, sample_rate=CON.sample_rate_,
@@ -46,7 +46,7 @@ def fin_read(samples, sample_rate=CON.sample_rate_,
     print("Acquired {} points".format(read.value))
 
 
-def con_read(sample_rate=CON.sample_rate_, samples=CON.samples_, min=CON.min_, max=CON.max_):
+def con_read(sample_rate=CON.sample_rate_, samples=CON.samples_, min=CON.min_, max=CON.max_, *args, **kwargs):
     analog_input = Task()
     read = int32()
     analog_input.CreateAIVoltageChan("Dev1/ai0", "", DAQmx_Val_Cfg_Default, min, max, DAQmx_Val_Volts, None)

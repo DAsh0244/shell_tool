@@ -12,8 +12,7 @@ Supports:
  - [ ] configurable channel config
  
  
-##Requirements
-
+## Requirements
 
 [Python3.x][py] - Tested with `> 3.5.1 Win` , `3.4 Linux`
 

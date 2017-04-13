@@ -46,7 +46,7 @@ fake_daq file for testing of the command line itself
 
 eg: `python  shell/shell.py FAKE` 
 
-##Todo 
+## Todo 
 - [ ] Front End Functions
 - [ ] Backend Functions
 - [ ] Preliminary Documentation
@@ -55,7 +55,7 @@ eg: `python  shell/shell.py FAKE`
 
 - [ ] Misc as found
 
-##ref
+## ref
 [1] - assuming you have `python` (and/or `pip`) as Python3 in your `%PATH%`
 
 [2] - assuming you have `python` (and/or `pip`) as Python2 in your `$PATH` already,

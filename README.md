@@ -6,12 +6,14 @@ command of DAQmx compatible products.
 
 Supports:
  - [x] Finite single run reads
- - [x] multiple file types to save data as [see here](3)
+ - [x] multiple file types to save data as [see here](#ref)
  - [ ] Continuous keyboard interrupted reads
  - [ ] Timer based continuous reads
  - [ ] configurable channel config
  
-##Requirements
+ 
+## Requirements
+
 [Python3.x][py] - Tested with `> 3.5.1 Win` , `3.4 Linux`
 
 pip
@@ -44,7 +46,7 @@ fake_daq file for testing of the command line itself
 
 eg: `python  shell/shell.py FAKE` 
 
-##Todo 
+## Todo 
 - [ ] Front End Functions
 - [ ] Backend Functions
 - [ ] Preliminary Documentation
@@ -53,7 +55,7 @@ eg: `python  shell/shell.py FAKE`
 
 - [ ] Misc as found
 
-##ref
+## ref
 [1] - assuming you have `python` (and/or `pip`) as Python3 in your `%PATH%`
 
 [2] - assuming you have `python` (and/or `pip`) as Python2 in your `$PATH` already,

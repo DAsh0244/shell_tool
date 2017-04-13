@@ -1,0 +1,35 @@
+from unittest import TestCase
+from shell import timer
+
+__author__ = 'Danyal Ahsanullah'
+__version__ = '1.0.0'
+__project__ = 'shell'
+
+
+class TestTimer(TestCase):
+    def test_indexing(self):
+        __name__ = 'test_indexing'
+        sample_rate = 1000
+        start = 0
+        length = 10
+        end = start + length/sample_rate
+        time = timer.Timer(start, sample_rate, length)
+        self.assertRaises(expected_exception=IndexError, args=time.__getitem__(length))
+        self.assertRaises(expected_exception=IndexError, args=time.__getitem__(-length + 1))
+        for i in range(0, length):
+            self.assertAlmostEqual(start + (i/sample_rate), time[i], places=7, msg='Unexpected Time value mismatch')
+        for i in range(-length, 0, 1):
+            self.assertAlmostEqual(end + (i / sample_rate), time[i], places=7, msg='Unexpected Time value mismatch')
+
+    def test_slicing(self):
+        __name__ = 'test_slicing'
+        sample_rate = 1000
+        start = 0
+        length = 10
+        end = start + (length) / sample_rate
+        time = timer.Timer(start, sample_rate, length)
+        raise Exception('Not Yet Implemented -- {}'.format(__name__))
+
+if __name__ == '__main__':
+    import unittest
+    unittest.main()

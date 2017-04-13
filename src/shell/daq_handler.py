@@ -63,18 +63,22 @@ def view(entries: int, tail: bool, *args, **kwargs):
         print(data[0:int(entries)])
 
 
-def get_path():
+def get_path(file=None):
     import os
-    path = './'
+    path = os.getcwd()
     try:
-        path = os.path.join(os.getcwd(), 'OUTPUT')
+        path = os.path.join(path, 'OUTPUT')
     except FileNotFoundError:
         os.mkdir('OUTPUT')
-        path = os.path.join(os.getcwd(), 'OUTPUT')
+        path = os.path.join(path, 'OUTPUT')
+    if file:
+        path = os.path.join(path,file)
     return path
 
 
-def save(file_name, path=get_path(), *args, **kwargs):
+def save(file_name, path=None, delim=None, *args, **kwargs):
+    if not path:
+        path = get_path()
     filename, extension = file_name.split('.')
     key = data.dtype.name
     delim_dict = {'.txt': ' ',
@@ -89,11 +93,16 @@ def save(file_name, path=get_path(), *args, **kwargs):
                 # 'int64'  : '',
                 # 'int': '',
                 }
+    if not delim:
+        delim = delim_dict[extension]
+
     #  TODO: Data blocking for multiple smaller files
     np.savetxt(os.path.join(path, filename) + extension, data,
-               delimiter=delim_dict[extension], fmt=fmt_dict.get(key, '%.18e'))
+               delimiter=delim, fmt=fmt_dict.get(key, '%.18e'))
+
     with open(os.path.join(path, filename) + '_t.' + extension, 'w') as time_file:
         temp_time = time.initial
         for i in range(0, len(data)):
+            time_file.writelines('{}\n'.format(item) for item in temp_time)
             time_file.write('{:.18e}'.format(temp_time))
             temp_time += time.time_step

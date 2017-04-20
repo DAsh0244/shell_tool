@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 import argparse
-import constants as CON
+import constants as con
 import sys
 try:
     if str(sys.argv[1]).upper() == 'FAKE':
         import fake_daq as daq
         print('running in fake daq mode')
-except:
+except IndexError:
     import daq_handler as daq
 
 
@@ -18,10 +18,11 @@ class ReadParser(argparse.ArgumentParser):
                                          add_help=False, *args, **kwargs)
 
 
-class Cli:
+class CliParsers:
     """
         DAQ CLI shell command parsers
-        Ideally want one parser per command for stability of parsing commands"""
+        Ideally want one parser per command for stability of parsing commands
+    """
     def __init__(self):
         self.save_parser = ReadParser('save')
         self.fin_parser = ReadParser('fin_read')
@@ -37,29 +38,30 @@ class Cli:
 
         """ Finite Read Parser """
         self.fin_parser.add_argument('--version', action='version', version='0.0.1')
-        self.fin_parser.add_argument('samples', type=int, action='store', default=CON.samples_,
-                                     help='number of samples_ to read in a given run (default: {})'.format(CON.samples_))
-        self.fin_parser.add_argument('--sample_rate', type=float, action='store', nargs='?', default=CON.sample_rate_,
-                                     help='set sample rate (Hz) for the DAQ (default: {})'.format(CON.sample_rate_))
-        self.fin_parser.add_argument('--min', type=float, default=CON.min_, nargs='?', action='store',
-                                     help='minimum input voltage (default: {})'.format(CON.min_))
-        self.fin_parser.add_argument('--max', type=float, default=CON.max_, nargs='?', action='store',
-                                     help='maximum input voltage (default: {})'.format(CON.max_))
+        self.fin_parser.add_argument('samples', type=int, action='store', default=con.samples_,
+                                     help='number of samples to read in a given run (default: {})'.format(con.samples_))
+        self.fin_parser.add_argument('--sample_rate', type=float, action='store', nargs='?', default=con.sample_rate_,
+                                     help='set sample rate (Hz) for the DAQ (default: {})'.format(con.sample_rate_))
+        self.fin_parser.add_argument('--min', type=float, default=con.min_, nargs='?', action='store',
+                                     help='minimum input voltage (default: {})'.format(con.min_))
+        self.fin_parser.add_argument('--max', type=float, default=con.max_, nargs='?', action='store',
+                                     help='maximum input voltage (default: {})'.format(con.max_))
         self.fin_parser.set_defaults(func=daq.fin_read)
 
         """ Continuous Read Parser """
         self.con_parser.add_argument('--version', action='version', version='0.0.1')
-        self.con_parser.add_argument('--sample_rate_', type=float, action='store', nargs='?', const=CON.sample_rate_,
-                                     help='set sample rate (Hz) for the DAQ (default: {})'.format(CON.sample_rate_))
-        self.con_parser.add_argument('--min', type=float, const=CON.min_, nargs='?', action='store',
-                                     help='minimum input voltage (default: {})'.format(CON.min_))
-        self.con_parser.add_argument('--max', type=float, const=CON.max_, nargs='?', action='store',
-                                     help='maximum input voltage (default: {})'.format(CON.max_))
+        self.con_parser.add_argument('--sample_rate_', type=float, action='store', nargs='?', const=con.sample_rate_,
+                                     help='set sample rate (Hz) for the DAQ (default: {})'.format(con.sample_rate_))
+        self.con_parser.add_argument('--min', type=float, const=con.min_, nargs='?', action='store',
+                                     help='minimum input voltage (default: {})'.format(con.min_))
+        self.con_parser.add_argument('--max', type=float, const=con.max_, nargs='?', action='store',
+                                     help='maximum input voltage (default: {})'.format(con.max_))
+        self.con_parser.add_argument('--file')
         self.con_parser.set_defaults(func=daq.con_read)
 
         """ View Parser """
         self.view_parser.add_argument('--version', action='version', version='0.0.1')
-        self.view_parser.add_argument('entries', type=int, action='store', default=CON.buf_size_,
+        self.view_parser.add_argument('entries', type=int, action='store', default=con.buf_size_,
                                       help='how many entries in buffer to view')
         self.view_parser.add_argument('--tail', action="store_true", default=False,
                                       help='view the last elements in the buffer')
@@ -72,24 +74,29 @@ class Cli:
 
 if __name__ == '__main__':
     """ Testing for each parser """
-    # todo - automate testing in a seperate file?
-    import os
-    import sys
-    cli = Cli()
-    args = cli.fin_parser.parse_args()
+    # todo - automate testing in a separate file?
+    # import os
+    sys.argv.remove('FAKE')
+    cli = CliParsers()
+
+    print('\nfin parser:')
+    args = cli.fin_parser.parse_args(['120'])
     args.func(**vars(args))
 
-    os.system('pause')
+    # os.system('pause')
+    print('\ncon parser:')
     args = cli.con_parser.parse_args(['--sample_rate_', '12'])
     args.func(**vars(args))
 
-    os.system('pause')
+    # os.system('pause')
+    print('\nview parser:')
     args = cli.view_parser.parse_args(['12'])
     args.func(**vars(args))
 
-    os.system('pause')
+    # os.system('pause')
+    print('\nquit parser:')
     args = cli.quit_parser.parse_args(['-q'])
     # args.func(**vars(args))
-    print(**vars(args))
+    # print(**vars(args))
 
     sys.exit(0)

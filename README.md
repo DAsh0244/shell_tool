@@ -4,7 +4,7 @@ Allows for control in a command line
 shell environment that will allow for shell
 command of DAQmx compatible products. 
 
-Supports:
+Will end up supporting:
  - [x] Finite single run reads
  - [x] multiple file types to save data as [see here](#ref)
  - [ ] Continuous keyboard interrupted reads
@@ -16,7 +16,7 @@ Supports:
 
 [Python3.x][py] - Tested with `> 3.5.1 Win` , `3.4 Linux`
 
-pip
+`pip`
 
 ## Installation
 
@@ -36,13 +36,13 @@ Fetch dependencies:
 
 ## Use 
 Start it by launching `shell.py` with python.  
-Recommended to run in the `shell_tool` directory
+Recommended to run in the `src/shell/` directory
 
 eg: `python  shell/shell.py` 
 
 There is an optional Command Line Argument `FAKE` 
 that allows you to run the shell with the 
-fake_daq file for testing of the command line itself
+[fake_daq](src/shell/fake_daq.py) file for testing of the command line itself
 
 eg: `python  shell/shell.py FAKE` 
 

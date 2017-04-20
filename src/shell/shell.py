@@ -15,7 +15,7 @@ class Shell(Cmd):
 
         self.intro = 'DAQ-CLI v {}\nStarting Capture Tool.' \
                      ' Type "help" or "?" to get a list of help commands \n'.format(Shell.version)
-        self.cli = cmd_parser.Cli()
+        self.cli = cmd_parser.CliParsers()
         try:
             if cmd_parser.daq.FAKE:
                 self.prompt = '(FAKE) DAQ-CLI > '

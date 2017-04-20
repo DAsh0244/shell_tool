@@ -26,9 +26,41 @@ class TestTimer(TestCase):
         sample_rate = 1000
         start = 0
         length = 10
-        end = start + (length) / sample_rate
+        end = start + length/sample_rate
         time = timer.Timer(start, sample_rate, length)
-        raise Exception('Not Yet Implemented -- {}'.format(__name__))
+
+        stop = 2
+
+        index = slice(start, stop)
+        vals = time[index]
+        for i in range(start, stop):
+            self.assertAlmostEqual(start + (i/sample_rate), vals[i], places=7, msg='Unexpected Time value mismatch')
+
+        index = slice(stop)
+        vals = time[index]
+        for i in range(start, stop):
+            self.assertAlmostEqual(start + (i / sample_rate), vals[i], places=7, msg='Unexpected Time value mismatch')
+
+        # TODO implement slicing tests
+        index = slice(length-stop, None)
+        vals = time[index]
+        for i in range(length-stop, length):
+            self.assertAlmostEqual(start + (i / sample_rate), vals[i], places=7, msg='Unexpected Time value mismatch')
+
+        print('time[-3:-1] = {}'.format(time[-3:-1]))
+        index = slice(-1-stop, -1)
+        vals = time[index]
+        for i in range(-length, 0, -1):
+            self.assertAlmostEqual(end + (i / sample_rate), vals[i], places=7, msg='Unexpected Time value mismatch')
+
+        print('time[-1:-3] = {}'.format(time[-1:-3]))
+        index = slice(-1-stop, -1)
+        vals = time[index]
+        for i in range(length - stop, length):
+            self.assertAlmostEqual(start + (i / sample_rate), vals[i], places=7, msg='Unexpected Time value mismatch')
+
+        raise Exception('Not Yet Implemented -- {}'.format(self.test_slicing.__name__))
+
 
 if __name__ == '__main__':
     import unittest

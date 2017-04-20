@@ -6,10 +6,10 @@ command of DAQmx compatible products.
 
 Will end up supporting:
  - [x] Finite single run reads
- - [x] multiple file types to save data as [see here](#ref)
- - [ ] Continuous keyboard interrupted reads
+ - [x] Multiple file types to save data as ([see here](#ref))
+ - [x] Continuous keyboard interrupted reads
  - [ ] Timer based continuous reads
- - [ ] configurable channel config
+ - [ ] Configurable channel config
  
  
 ## Requirements

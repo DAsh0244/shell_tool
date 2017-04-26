@@ -1,7 +1,15 @@
-# import numpy as np
-# import constants as con
-# import os
-# from timer import Timer
+#!/usr/bin/env python
+# vim:fileencoding=utf-8
+# -*- coding: utf-8 -*-
+"""
+shell_tool
+constants.py
+Author: Danyal Ahsanullah
+Date: 4/24/2017
+License: N/A
+Description: Fake simulated DAQ lib to simulate the api of a NI's DAQmx drivers
+"""
+
 import random
 from daq_utils import *
 FAKE = True
@@ -14,19 +22,20 @@ def fin_read(samples, sample_rate=con.sample_rate_, min=con.min_, max=con.max_, 
     if samples > buf_size:
         if not expand:
             samples = buf_size
-            # print('truncated')
+            print('truncated')
         else:
             buffer_resize(samples)
-            # print('extended')
+            print('extended')
     for i in range(buf_size-1, len(data)-1):
         data[i] = random.randint(1, 12)
-    time = Timer(0, sample_rate, samples)
+    time = Timer.get_timer('list', 0, sample_rate, samples)
     print("Acquired {} points".format(samples))
     print('Time taken: {} seconds'.format(time[-1]))
 
 
 def con_read(sample_rate=con.sample_rate_, min=con.min_, max=con.max_, file_name=None, *args, **kwargs):
     """
+    
     
     :param sample_rate: 
     :param min: 

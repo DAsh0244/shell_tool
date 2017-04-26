@@ -1,4 +1,14 @@
+#!/usr/bin/env python
+# vim:fileencoding=utf-8
 # -*- coding: utf-8 -*-
+"""
+shell_tool
+cmd_parser.py
+Author: Danyal Ahsanullah
+Date: 4/24/2017
+License: N/A
+Description: parser(s) for CLI 
+"""
 import argparse
 import constants as con
 import sys
@@ -50,7 +60,7 @@ class CliParsers:
 
         """ Continuous Read Parser """
         self.con_parser.add_argument('--version', action='version', version='0.0.1')
-        self.con_parser.add_argument('--sample_rate_', type=float, action='store', nargs='?', const=con.sample_rate_,
+        self.con_parser.add_argument('--sample_rate', type=float, action='store', nargs='?', const=con.sample_rate_,
                                      help='set sample rate (Hz) for the DAQ (default: {})'.format(con.sample_rate_))
         self.con_parser.add_argument('--min', type=float, const=con.min_, nargs='?', action='store',
                                      help='minimum input voltage (default: {})'.format(con.min_))

@@ -1,7 +1,15 @@
-# import numpy as np
-# import constants as con
-# import os
-# from timer import Timer
+#!/usr/bin/env python
+# vim:fileencoding=utf-8
+# -*- coding: utf-8 -*-
+"""
+shell_tool
+daq_handler.py
+Author: Danyal Ahsanullah
+Date: 4/24/2017
+License: N/A
+Description: daq handler that uses the PyDAQmx bindings to the NI DAQmx drivers
+"""
+
 from PyDAQmx import *
 from daq_utils import *
 from math import ceil
@@ -40,7 +48,6 @@ def con_read(sample_rate=con.sample_rate_, min=con.min_, max=con.max_, file_name
     it.start()
     pt.start()
     j = 0
-    vals = deque()
     chunk = np.zeros(con.chunk_)
     filename, extension = file_name.split('.')
     analog_input = Task()

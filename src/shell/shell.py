@@ -1,4 +1,15 @@
+#!/usr/bin/env python
+# vim:fileencoding=utf-8
 # -*- coding: utf-8 -*-
+"""
+shell_tool
+shell.py
+Author: Danyal Ahsanullah
+Date: 4/20/2017
+License: N/A
+Description: main shell file for the tool
+"""
+
 import sys
 from cmd import Cmd
 from contextlib import suppress
@@ -7,14 +18,14 @@ import cmd_parser
 
 
 class Shell(Cmd):
-    version = "0.0.2 - 'Silly Name Here'"
+    __version__ = "0.0.2 - 'Silly Name Here'"
 
     def __init__(self):
         super(Shell, self).__init__()
         self.session = str(dt.today())
 
         self.intro = 'DAQ-CLI v {}\nStarting Capture Tool.' \
-                     ' Type "help" or "?" to get a list of help commands \n'.format(Shell.version)
+                     ' Type "help" or "?" to get a list of help commands \n'.format(Shell.__version__)
         self.cli = cmd_parser.CliParsers()
         try:
             if cmd_parser.daq.FAKE:
@@ -100,7 +111,7 @@ class Shell(Cmd):
     @staticmethod
     def do_version(*args, **kwargs):
         """print version of shell"""
-        print(Shell.version)
+        print(Shell.__version__)
 
     @staticmethod
     def do_buffer_size(num: int):

@@ -1,26 +1,36 @@
+#!/usr/bin/env python
+# vim:fileencoding=utf-8
+# -*- coding: utf-8 -*-
+"""
+shell_tool
+daq_utils.py
+Author: Danyal Ahsanullah
+Date: 4/24/2017
+License: N/A
+Description: basic utility functions for DAQ modules
+"""
 import os
 import numpy as np
 import constants as con
 from timer import Timer
 
 data = np.zeros(0)
-time = Timer(0, con.sample_rate_, 0)
+time = Timer.get_timer('list', 0, con.sample_rate_, 0)
 con.chunk_ = 1000
 
 
 def buffer_resize(data_size, _dtype=np.float64, maintain=False):
     global data, time
+    time.entries = data_size
     if maintain:
         buff_size = len(data)
         if buff_size > data_size:
             data = np.concatenate([data, np.zeros(data_size-buff_size, dtype=data.dtype)])
-            time = np.concatenate([time, np.zeros(data_size-buff_size, dtype=time.dtype)])
         else:
             data = data[0:data_size]
-            time = time[0:data_size]
     else:
         data = np.zeros(data_size, _dtype)
-        time = np.zeros(data_size, _dtype)
+        print(len(data))
 
 
 def process_running(run_event):

@@ -15,8 +15,9 @@ Will end up supporting:
  
 ## Requirements
 
-[Python3.x][py] - Tested with `> 3.5.1 Win` , `3.4 Linux`
 [git][git] - for update checking
+
+[Python3.x][py] - Tested with `> 3.5.1 Win` , `3.4 Linux`
 
 `pip`
 

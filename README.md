@@ -16,6 +16,7 @@ Will end up supporting:
 ## Requirements
 
 [Python3.x][py] - Tested with `> 3.5.1 Win` , `3.4 Linux`
+[git][git] - for update checking
 
 `pip`
 
@@ -41,6 +42,9 @@ Fetch dependencies:
 There is a `py_env.bat` file in the [scripts/win](scripts/win) directory.
 Launch that and follow the dialog to start the tool. 
 Recommend making a shortcut to this script for ease of use.
+
+If you do not have git installed and in your `PATH`,
+install it and add to `PATH`. (restart may be needed)
 
 ### UNIX/LINUX:
 A shell script is in the works. Until then...
@@ -75,4 +79,5 @@ as then Python3 should be aliased to `python3`
 - `.mat`
 
 [//]: # "links"
-[py]:https://www.python.org/ "Python main page" 
+[py]: https://www.python.org/downloads/ "Python downloads page" 
+[git]: https://git-scm.com/downloads "git downloads page"

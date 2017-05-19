@@ -38,7 +38,7 @@ Fetch dependencies:
 ## Use 
 
 ### Windows:
-There is a [py_env.bat](scripts/py_env.bat) file in the [scripts](scripts) directory.
+There is a [py_env.bat](scripts/win/py_env.bat) file in the [scripts](scripts) directory.
 Launch that and follow the dialog to start the tool. 
 Recommend making a shortcut to this script for ease of use.
 

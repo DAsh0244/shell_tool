@@ -1,5 +1,5 @@
 $chkstr = "up-to-date"
-$startup_path = $((Get-Item -Path ".\" -Verbose).FullName)
+$startup_path = $((Get-Item -Path ".\\" -Verbose).FullName)
 cd ..\..
 echo "checking update status..."
 git remote update >$null

@@ -10,7 +10,8 @@ License: N/A
 Description: Timer structure tests
 """
 from unittest import TestCase
-from shell.timer import Timer
+
+from timer import Timer
 
 __version__ = '1.0.0'
 

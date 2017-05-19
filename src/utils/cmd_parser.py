@@ -10,14 +10,14 @@ License: N/A
 Description: parser(s) for CLI 
 """
 import argparse
-import constants as con
+from utils import constants as con
 import sys
 try:
     if str(sys.argv[1]).upper() == 'FAKE':
-        import fake_daq as daq
+        from utils import fake_daq as daq
         print('running in fake daq mode')
 except IndexError:
-    import daq_handler as daq
+    from utils import daq_handler as daq
 
 
 class ReadParser(argparse.ArgumentParser):
@@ -44,7 +44,7 @@ class CliParsers:
         self.save_parser.add_argument('--version', action='version', version='0.0.1')
         self.save_parser.add_argument('file_name', type=str, action='store',
                                       help='file name to save current data as')
-        self.save_parser.set_defaults(func=daq.save)
+        self.save_parser.set_defaults(func=daq.dq.save)
 
         """ Finite Read Parser """
         self.fin_parser.add_argument('--version', action='version', version='0.0.1')
@@ -60,13 +60,13 @@ class CliParsers:
 
         """ Continuous Read Parser """
         self.con_parser.add_argument('--version', action='version', version='0.0.1')
-        self.con_parser.add_argument('--sample_rate', type=float, action='store', nargs='?', const=con.sample_rate_,
+        self.con_parser.add_argument('--sample_rate', type=float, action='store', nargs='?', default=con.sample_rate_,
                                      help='set sample rate (Hz) for the DAQ (default: {})'.format(con.sample_rate_))
         self.con_parser.add_argument('--min', type=float, const=con.min_, nargs='?', action='store',
                                      help='minimum input voltage (default: {})'.format(con.min_))
         self.con_parser.add_argument('--max', type=float, const=con.max_, nargs='?', action='store',
                                      help='maximum input voltage (default: {})'.format(con.max_))
-        self.con_parser.add_argument('--file')
+        self.con_parser.add_argument('file')
         self.con_parser.set_defaults(func=daq.con_read)
 
         """ View Parser """
@@ -75,7 +75,7 @@ class CliParsers:
                                       help='how many entries in buffer to view')
         self.view_parser.add_argument('--tail', action="store_true", default=False,
                                       help='view the last elements in the buffer')
-        self.view_parser.set_defaults(func=daq.view)
+        self.view_parser.set_defaults(func=daq.dq.view)
 
         """" Quit Parser """
         self.quit_parser.add_argument('-q', action='store_true', default=False, help='exit CLI')

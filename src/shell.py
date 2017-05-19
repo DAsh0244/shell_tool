@@ -14,7 +14,8 @@ import sys
 from cmd import Cmd
 from contextlib import suppress
 from datetime import datetime as dt
-import cmd_parser
+
+from utils import cmd_parser
 
 
 class Shell(Cmd):

@@ -4,7 +4,7 @@ cd ..\..
 echo "checking update status..."
 git remote update >$null
 if (!($(git status | Select-String $chkstr) -Match $chkstr)){
-    if ($(Read-Host -Prompt "updates avaible. Update now? (y/n): ") -Contains"y") {
+    if ($(Read-Host -Prompt "updates avaible. Update now? (y/n)") -Contains"y") {
     git pull
     }
 }

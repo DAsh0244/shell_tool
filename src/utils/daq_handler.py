@@ -20,8 +20,7 @@ from utils import daq_utils as dq
 from utils import constants as con
 
 
-def fin_read(samples, sample_rate=con.sample_rate_,
-             min=con.min_, max=con.max_, expand=True, *args, **kwargs):
+def fin_read(samples, sample_rate=con.sample_rate_, min=con.min_, max=con.max_, expand=True, *args, **kwargs):
     # global data, time  # -- may be needed?
     # buffer_resize(samples)
     buf_size = len(dq.data)
@@ -43,7 +42,6 @@ def fin_read(samples, sample_rate=con.sample_rate_,
 
 
 def con_read(sample_rate=con.sample_rate_, min=con.min_, max=con.max_, file_name='OUTPUT.txt', *args, **kwargs):
-
     run_event = threading.Event()
     run_event.set()
     it = threading.Thread(target=dq.kb_int, args=(run_event,))

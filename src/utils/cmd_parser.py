@@ -52,21 +52,21 @@ class CliParsers:
                                      help='number of samples to read in a given run (default: {})'.format(con.samples_))
         self.fin_parser.add_argument('--sample_rate', type=float, action='store', nargs='?', default=con.sample_rate_,
                                      help='set sample rate (Hz) for the DAQ (default: {})'.format(con.sample_rate_))
-        self.fin_parser.add_argument('--min', type=float, default=con.min_, nargs='?', action='store',
-                                     help='minimum input voltage (default: {})'.format(con.min_))
-        self.fin_parser.add_argument('--max', type=float, default=con.max_, nargs='?', action='store',
-                                     help='maximum input voltage (default: {})'.format(con.max_))
+        self.fin_parser.add_argument('--min', type=float, const=con.min_, nargs='?', action='store',
+                                     default=con.min_, help='minimum input voltage')
+        self.fin_parser.add_argument('--max', type=float, const=con.max_, nargs='?', action='store',
+                                     default=con.max_, help='maximum input voltage')
         self.fin_parser.set_defaults(func=daq.fin_read)
 
         """ Continuous Read Parser """
         self.con_parser.add_argument('--version', action='version', version='0.0.1')
         self.con_parser.add_argument('--sample_rate', type=float, action='store', nargs='?', default=con.sample_rate_,
-                                     help='set sample rate (Hz) for the DAQ (default: {})'.format(con.sample_rate_))
+                                     help='set sample rate (Hz) for the DAQ')
         self.con_parser.add_argument('--min', type=float, const=con.min_, nargs='?', action='store',
-                                     help='minimum input voltage (default: {})'.format(con.min_))
+                                     default=con.min_, help='minimum input voltage')
         self.con_parser.add_argument('--max', type=float, const=con.max_, nargs='?', action='store',
-                                     help='maximum input voltage (default: {})'.format(con.max_))
-        self.con_parser.add_argument('file')
+                                     default=con.max_, help='maximum input voltage')
+        self.con_parser.add_argument('file_name', type=str, help='file name for file to be saved as')
         self.con_parser.set_defaults(func=daq.con_read)
 
         """ View Parser """

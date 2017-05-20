@@ -52,7 +52,8 @@ def con_read(sample_rate=con.sample_rate_, min=con.min_, max=con.max_, file_name
     :param kwargs: 
     :return: number of points read
     """
-    file_name = '{}_OUTPUT.txt'.format(dt.now().strftime('%d-%b-%Y--%H-%M-%f'))
+    if file_name is None:
+        file_name = '{}_OUTPUT.txt'.format(dt.now().strftime('%d-%b-%Y--%H-%M-%f'))
     run_event = threading.Event()
     run_event.set()
     it = threading.Thread(target=dq.kb_int, args=(run_event,))

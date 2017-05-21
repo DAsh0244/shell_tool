@@ -31,6 +31,8 @@ def create_shell(func):
 
 class Shell(Cmd):
     __version__ = "0.0.2 - 'Silly Name Here'"
+    # identchars = Cmd.identchars
+    ruler = '-'
     prompt = '(FAKE) DAQ-CLI > '
     intro = 'DAQ-CLI v {}\n' \
             'Starting Capture Tool.\n' \
@@ -170,6 +172,18 @@ class Shell(Cmd):
         """Run a shell command"""
         output = os.popen(line).read()
         print(output)
+
+    def complete_fin_read(self, text, line, begidx, endidx):
+        return [i for i in self.cli.FIN_READ_ARGS if i.startswith(text)]
+
+    def complete_con_read(self, text, line, begidx, endidx):
+        return [i for i in self.cli.CON_READ_ARGS if i.startswith(text)]
+
+    def complete_view(self, text, line, begidx, endidx):
+        return [i for i in self.cli.VIEW_ARGS if i.startswith(text)]
+
+    def complete_quit(self, text, line, begidx, endidx):
+        return [i for i in self.cli.QUIT_ARGS if i.startswith(text)]
 
 
 class ScriptShell(Shell):

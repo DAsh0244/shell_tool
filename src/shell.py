@@ -85,7 +85,6 @@ class Shell(Cmd):
             command = self.cli.save_parser.parse_args(params)
             command.func(**vars(command))
 
-    # TODO Make a proper quit parser
     def do_quit(self, *args):
         """
         Quit the program.

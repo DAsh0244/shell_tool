@@ -22,21 +22,30 @@ from utils import cmd_parser
 class Shell(Cmd):
     __version__ = "0.0.2 - 'Silly Name Here'"
     prompt = '(FAKE) DAQ-CLI > '
-    try:
-        if cmd_parser.daq.FAKE:
-            prompt = '(FAKE) DAQ-CLI > '
-    except AttributeError:  # if FAKE doesnt exist
-        pass
-    intro = 'DAQ-CLI v {}\nStarting Capture Tool.' \
-            ' Type "help" or "?" to get a list of help commands \n'.format(__version__)
+    intro = 'DAQ-CLI v {}\n' \
+            'Starting Capture Tool.\n' \
+            'Type "help" or "?" to get a list of help commands \n'.format(__version__)
     # doc_header = "Documented commands (type help <topic>):"
     # misc_header = "Miscellaneous help topics:"
     # undoc_header = "Undocumented commands:"
+    try:
+        if cmd_parser.daq.FAKE:
+            prompt = '(FAKE) DAQ-CLI > '
+            intro = 'Running in fake daq mode\n' + intro
+    except AttributeError:  # if FAKE doesnt exist
+        pass
+
 
     def __init__(self, *args, **kwargs):
         super(Shell, self).__init__(*args, **kwargs)
         self.session = str(dt.now().strftime('%d-%b-%Y--%H-%M-%f'))
         self.cli = cmd_parser.CliParsers()
+
+    def cmdloop(self, intro=None):
+        try:
+            super(Shell, self).cmdloop(intro)
+        except KeyboardInterrupt:
+            sys.stdout.write(os.linesep)
 
     def help_fin_read(self):
         self.cli.fin_parser.print_help()
@@ -141,7 +150,8 @@ class Shell(Cmd):
             except ValueError:
                 print('invalid input, [num] must be of type <int>')
 
-    def do_EOF(self, line):
+    @staticmethod
+    def do_EOF( line):
         return True
 
     @staticmethod
@@ -167,10 +177,10 @@ if __name__ == '__main__':
         if sys.argv[1] == 'FAKE':
             sys.argv.remove('FAKE')
             passed -= 1
-        if os.path.isfile(sys.argv[1]):
+        if (passed > 1) and os.path.isfile(sys.argv[1]):
             input_stream = open(sys.argv[1], 'rt')
             shell = create_shell(ScriptShell(stdin=input_stream).cmdloop)
-        elif not passed == 2:  # if sys argv is NOT "python shell.py FAKE"
+        elif passed != 1:  # if sys argv is NOT ".../shell.py FAKE"
             shell = create_shell(lambda: Shell().onecmd(' '.join(sys.argv[1:])))
     shell()
     try:

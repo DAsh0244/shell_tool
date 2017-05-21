@@ -15,7 +15,7 @@ import sys
 try:
     if str(sys.argv[1]).upper() == 'FAKE':
         from utils import fake_daq as daq
-        print('running in fake daq mode')
+        # print('running in fake daq mode')
 except IndexError:
     from utils import daq_handler as daq
 

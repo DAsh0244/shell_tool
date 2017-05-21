@@ -95,3 +95,12 @@ def save(file_name, path=None, delim=None, *args, **kwargs):
     np.savetxt(os.path.join(path, filename) + '.' + extension, data,
                delimiter=delim, newline=os.linesep, fmt=fmt_dict.get(key, '%.18e'))
     time.savetxt(os.path.join(path, filename) + '_t.' + extension)
+
+
+def quit_save(q, file, s, *args, **kwargs):
+    if not (q or file):
+        choice = input('save contents of session to file? (y/n):')
+        if choice.lower == 'y':
+            save(s + '.txt')
+    if file:
+        save(file)

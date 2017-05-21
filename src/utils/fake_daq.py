@@ -29,11 +29,11 @@ def fin_read(samples, sample_rate=con.sample_rate_, min=con.min_, max=con.max_, 
     if samples > buf_size:
         if not expand:
             samples = buf_size
-            print('truncated')
+            # print('truncated')
         else:
             dq.buffer_resize(samples)
             buf_size = samples
-            print('extended')
+            # print('extended')
     for i in range(0, buf_size):
         dq.data[i] = random.uniform(1, 12)
     dq.time = Timer.get_timer('list', 0, sample_rate, samples)
@@ -41,7 +41,7 @@ def fin_read(samples, sample_rate=con.sample_rate_, min=con.min_, max=con.max_, 
     print('Time taken: {} seconds'.format(dq.time[-1]))
 
 
-def con_read(sample_rate=con.sample_rate_, min=con.min_, max=con.max_, file_name=None, *args, **kwargs):
+def con_read(sample_rate=con.sample_rate_, min=con.min_, max=con.max_, file_name: str=None, *args, **kwargs):
     """
     
     :param sample_rate: 

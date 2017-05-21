@@ -2,3 +2,6 @@ fin_read 10
 save test.txt
 view_data 10
 session test_session
+! dir
+rem this is a comment
+! cd

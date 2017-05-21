@@ -16,8 +16,6 @@ from cmd import Cmd
 from utils import cmd_parser
 from contextlib import suppress
 from datetime import datetime as dt
-
-
 # import signal
 #
 #
@@ -25,6 +23,7 @@ from datetime import datetime as dt
 #     pass
 #
 # signal.signal(signal.SIGINT, handler)
+
 
 def create_shell(func):
     return func
@@ -36,6 +35,7 @@ class Shell(Cmd):
     intro = 'DAQ-CLI v {}\n' \
             'Starting Capture Tool.\n' \
             'Type "help" or "?" to get a list of help commands \n'.format(__version__)
+    cli = cmd_parser.CliParsers
     # doc_header = "Documented commands (type help <topic>):"
     # misc_header = "Miscellaneous help topics:"
     # undoc_header = "Undocumented commands:"
@@ -49,7 +49,7 @@ class Shell(Cmd):
     def __init__(self, *args, **kwargs):
         super(Shell, self).__init__(*args, **kwargs)
         self.session = str(dt.now().strftime('%d-%b-%Y--%H-%M-%f'))
-        self.cli = cmd_parser.CliParsers()
+        # self.cli = cmd_parser.CliParsers
 
     # def cmdloop(self, intro=None):
     #     try:
@@ -132,7 +132,7 @@ class Shell(Cmd):
     def do_session(self, name):
         """if no arguments provided, echos current session name"""
         if name != "":
-            self.session = name
+            self.session = name.replace(' ', '_')
         else:
             print('\n'+self.session+'\n')
 
@@ -175,6 +175,15 @@ class Shell(Cmd):
 class ScriptShell(Shell):
     prompt = ''
     use_rawinput = False
+
+    def do_rem(self, *args):
+        pass
+
+    def do_REM(self, *args):
+        pass
+
+    def do_Rem(self, *args):
+        pass
 
 
 if __name__ == '__main__':

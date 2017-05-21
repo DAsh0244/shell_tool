@@ -41,11 +41,11 @@ class Shell(Cmd):
         self.session = str(dt.now().strftime('%d-%b-%Y--%H-%M-%f'))
         self.cli = cmd_parser.CliParsers()
 
-    def cmdloop(self, intro=None):
-        try:
-            super(Shell, self).cmdloop(intro)
-        except KeyboardInterrupt:
-            sys.stdout.write(os.linesep)
+    # def cmdloop(self, intro=None):
+    #     try:
+    #         super(Shell, self).cmdloop(intro)
+    #     except KeyboardInterrupt:
+    #         sys.stdout.write(os.linesep)
 
     def help_fin_read(self):
         self.cli.fin_parser.print_help()

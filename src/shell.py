@@ -13,10 +13,21 @@ Description: main shell file for the tool
 import os
 import sys
 from cmd import Cmd
+from utils import cmd_parser
 from contextlib import suppress
 from datetime import datetime as dt
 
-from utils import cmd_parser
+
+# import signal
+#
+#
+# def handler(signum, frame):
+#     pass
+#
+# signal.signal(signal.SIGINT, handler)
+
+def create_shell(func):
+    return func
 
 
 class Shell(Cmd):
@@ -35,7 +46,6 @@ class Shell(Cmd):
     except AttributeError:  # if FAKE doesnt exist
         pass
 
-
     def __init__(self, *args, **kwargs):
         super(Shell, self).__init__(*args, **kwargs)
         self.session = str(dt.now().strftime('%d-%b-%Y--%H-%M-%f'))
@@ -45,7 +55,8 @@ class Shell(Cmd):
     #     try:
     #         super(Shell, self).cmdloop(intro)
     #     except KeyboardInterrupt:
-    #         sys.stdout.write(os.linesep)
+    #         sys.stdout.write('\n')
+    #         self.do_quit('-q')
 
     def help_fin_read(self):
         self.cli.fin_parser.print_help()
@@ -166,9 +177,6 @@ class ScriptShell(Shell):
     use_rawinput = False
 
 
-def create_shell(func):
-    return func
-
 if __name__ == '__main__':
     """ run shell """
     passed = len(sys.argv)
@@ -189,3 +197,4 @@ if __name__ == '__main__':
         pass
     finally:
         sys.exit(0)
+

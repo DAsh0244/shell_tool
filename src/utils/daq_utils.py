@@ -43,7 +43,7 @@ def process_running(run_event):
         sys.stdout.write('\r'+spinner[i])
         sys.stdout.flush()
         i = (i+1) if i < len(spinner_str) - 1 else 0
-        time.sleep(0.2)
+        time.sleep(0.3)
 
 
 def kb_int(run_event):
@@ -58,9 +58,9 @@ def kb_int(run_event):
 
 def view(entries: int, tail: bool, *args, **kwargs):
     if tail:
-        print(data[-int(entries):])
-    else:
-        print(data[0:int(entries)])
+        vals = data[-int(entries):]
+    else:        vals = data[0:int(entries)]
+    return vals
 
 
 def get_path(file=None):
@@ -85,15 +85,15 @@ def save(file_name, path=None, delim=None, *args, **kwargs):
     fmt_dict = {'float64': '%.14f',
                 'float32': '%.9f',
                 'float': '%.9f',
-                # 'int32'  : '',
-                # 'int64'  : '',
-                # 'int': '',
+                # 'int32'  : '%d',
+                # 'int64'  : '%d',
+                # 'int': '%d',
                 }
     if not delim:
         delim = delim_dict[extension]
     #  TODO: Data blocking for multiple smaller files
     np.savetxt(os.path.join(path, filename) + '.' + extension, data,
-               delimiter=delim, newline=os.linesep, fmt=fmt_dict.get(key, '%.18e'))
+               delimiter=delim, newline=os.linesep, fmt=fmt_dict.get(key, '%.14f'))
     time.savetxt(os.path.join(path, filename) + '_t.' + extension)
 
 

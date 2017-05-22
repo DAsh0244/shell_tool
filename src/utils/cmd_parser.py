@@ -9,9 +9,14 @@ Date: 4/24/2017
 License: N/A
 Description: parser(s) for CLI 
 """
+
+
+__version__ = '0.0.2'
+
+
+import sys
 import argparse
 from utils import constants as con
-import sys
 try:
     if str(sys.argv[1]).upper() == 'FAKE':
         from utils import fake_daq as daq
@@ -22,7 +27,7 @@ except IndexError:
 
 class ReadParser(argparse.ArgumentParser):
     """
-    Overloaded class to disable help flags by default. Modified formatter lenthg as well
+    Overloaded class to disable help flags by default. Modified formatter length as well
     Otherwise identical to argparse.ArguementParser
     """
     def __init__(self, *args, **kwargs):
@@ -34,7 +39,6 @@ class CliParsers:
     """
     DAQ CLI shell command parsers
     """
-    __version__ = '0.0.2'
     save_parser = ReadParser('save', description='Save buffer to file')
     fin_parser = ReadParser('fin_read', description='Finite read')
     con_parser = ReadParser('con_read', description='Continuous read')
@@ -42,14 +46,14 @@ class CliParsers:
     quit_parser = ReadParser('quit', description='Quit the shell.')
 
     """ Save data Parser """
-    # save_parser.add_argument('--version', action='version', version=CliParsers.__version__)
+    # save_parser.add_argument('--version', action='version', version=__version__)
     save_parser.add_argument('file_name', type=str, action='store',
                              help='file name to save current data as')
     save_parser.set_defaults(func=daq.dq.save)
 
     """ Finite Read Parser """
     FIN_READ_ARGS = ('--sample_rate', '--min', '--max')
-    # fin_parser.add_argument('--version', action='version', version=CliParsers.__version__)
+    # fin_parser.add_argument('--version', action='version', version=__version__)
     fin_parser.add_argument('samples', type=int, action='store', default=con.samples_,
                             help='number of samples to read in a given run')
     fin_parser.add_argument('--sample_rate', type=float, action='store', default=con.sample_rate_,
@@ -62,7 +66,7 @@ class CliParsers:
 
     """ Continuous Read Parser """
     CON_READ_ARGS = ('--sample_rate', '--min', '--max')
-    # con_parser.add_argument('--version', action='version', version=CliParsers.__version__)
+    # con_parser.add_argument('--version', action='version', version=__version__)
     con_parser.add_argument('file_name', type=str, help='file name for file to be saved as', )
     con_parser.add_argument('--sample_rate', type=float, action='store', default=con.sample_rate_,
                             help='set sample rate (Hz) for the DAQ')
@@ -74,7 +78,7 @@ class CliParsers:
 
     """ View Parser """
     VIEW_ARGS = ('--tail',)
-    # view_parser.add_argument('--version', action='version', version=CliParsers.__version__)
+    # view_parser.add_argument('--version', action='version', version=__version__)
     view_parser.add_argument('entries', type=int, action='store', default=con.buf_size_,
                              help='how many entries in buffer to view')
     view_parser.add_argument('--tail', action="store_true", default=False,
@@ -82,7 +86,7 @@ class CliParsers:
     view_parser.set_defaults(func=daq.dq.view)
 
     """" Quit Parser """
-    # quit_parser.add_argument('--version', action='version', version=CliParsers.__version__)
+    # quit_parser.add_argument('--version', action='version', version=__version__)
     QUIT_ARGS = ('-q', '-f', '--file')
     group = quit_parser.add_mutually_exclusive_group()
     group.add_argument('-q', action='store_true', default=False,

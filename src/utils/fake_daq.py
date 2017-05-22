@@ -37,8 +37,9 @@ def fin_read(samples, sample_rate=con.sample_rate_, min=con.min_, max=con.max_, 
     for i in range(0, buf_size):
         dq.data[i] = random.uniform(1, 12)
     dq.time = Timer.get_timer('list', 0, sample_rate, samples)
-    print("Acquired {} points".format(samples))
+    print('Acquired {} points'.format(samples))
     print('Time taken: {} seconds'.format(dq.time[-1]))
+    # return 'Acquired {} points'.format(samples) + '\n' + 'Time taken: {} seconds'.format(dq.time[-1] + '\n')
 
 
 def con_read(sample_rate=con.sample_rate_, min=con.min_, max=con.max_, file_name: str=None, *args, **kwargs):
@@ -48,8 +49,6 @@ def con_read(sample_rate=con.sample_rate_, min=con.min_, max=con.max_, file_name
     :param min: 
     :param max: 
     :param file_name: 
-    :param args: 
-    :param kwargs: 
     :return: number of points read
     """
     if file_name is None:

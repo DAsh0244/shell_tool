@@ -10,11 +10,15 @@ License: N/A
 Description: main shell file for the tool
 """
 
+
+__version__ = "0.0.3 - 'Basically Working'"
+
+
 import os
 import sys
 from cmd import Cmd
-from utils import cmd_parser
 from contextlib import suppress
+from utils import cmd_parser as cp
 from datetime import datetime as dt
 # import signal
 #
@@ -25,33 +29,29 @@ from datetime import datetime as dt
 # signal.signal(signal.SIGINT, handler)
 
 
-def create_shell(func):
-    return func
-
-
-class Shell(Cmd):
-    __version__ = "0.0.2 - 'Silly Name Here'"
+class ShellBase(Cmd):
+    """
+    Base class for DAQ shell. Should only be used as a parent class for a subclass.
+    """
     # identchars = Cmd.identchars
+    intro = 'ShellBase v{}\n'.format(__version__)
+    prompt = 'Base > '
     ruler = '-'
-    prompt = '(FAKE) DAQ-CLI > '
-    intro = 'DAQ-CLI v {}\n' \
-            'Starting Capture Tool.\n' \
-            'Type "help" or "?" to get a list of help commands \n'.format(__version__)
-    cli = cmd_parser.CliParsers
+    cli = cp.CliParsers
     # doc_header = "Documented commands (type help <topic>):"
     # misc_header = "Miscellaneous help topics:"
     # undoc_header = "Undocumented commands:"
     try:
-        if cmd_parser.daq.FAKE:
-            prompt = '(FAKE) DAQ-CLI > '
+        if cp.daq.FAKE:
+            prompt = '(FAKE) Base > '
             intro = 'Running in fake daq mode\n' + intro
     except AttributeError:  # if FAKE doesnt exist
         pass
 
     def __init__(self, *args, **kwargs):
-        super(Shell, self).__init__(*args, **kwargs)
+        super(ShellBase, self).__init__(*args, **kwargs)
         self.session = str(dt.now().strftime('%d-%b-%Y--%H-%M-%f'))
-        # self.cli = cmd_parser.CliParsers
+        # self.cli = cp.CliParsers
 
     # def cmdloop(self, intro=None):
     #     try:
@@ -59,21 +59,6 @@ class Shell(Cmd):
     #     except KeyboardInterrupt:
     #         sys.stdout.write('\n')
     #         self.do_quit('-q')
-
-    def help_fin_read(self):
-        self.cli.fin_parser.print_help()
-
-    def help_con_read(self):
-        self.cli.con_parser.print_help()
-
-    def help_view_data(self):
-        self.cli.view_parser.print_help()
-
-    def help_save(self):
-        self.cli.save_parser.print_help()
-
-    def help_quit(self):
-        self.cli.quit_parser.print_help()
 
     def do_fin_read(self, *args):
         """reads finite amounts of data"""
@@ -117,8 +102,7 @@ class Shell(Cmd):
         Options:
         -q     force quit with no prompt to save (will NOT save current buffer(s) contents
         -f     confirm save and exit with save filename being the string passed in the FILENAME field
-        """
-        """"
+
         Example call:
         quit                    before exit ask user if wanting to save contents of buffer(s) to file
         quit -q                 force quit
@@ -141,7 +125,7 @@ class Shell(Cmd):
     @staticmethod
     def do_version(*args, **kwargs):
         """print version of shell"""
-        print(Shell.__version__)
+        print(__version__)
 
     @staticmethod
     def do_buffer_size(num: int, *args, **kwargs):
@@ -155,11 +139,11 @@ class Shell(Cmd):
         [num] -- size to make the buffer
         """
         if num == '':
-            print(len(cmd_parser.daq.dq.data))
+            print(len(cp.daq.dq.data))
         else:
             try:
                 # TODO support rest of args to buffer resize
-                cmd_parser.daq.dq.buffer_resize(int(num))
+                cp.daq.dq.buffer_resize(int(num))
             except ValueError:
                 print('invalid input, [num] must be of type <int>')
 
@@ -172,6 +156,34 @@ class Shell(Cmd):
         """Run a shell command"""
         output = os.popen(line).read()
         print(output)
+
+
+class Shell(ShellBase):
+    prompt = 'DAQ-CLI > '
+    intro = 'DAQ-CLI v {}\n' \
+            'Starting Capture Tool.\n' \
+            'Type "help" or "?" to get a list of help commands.\n'.format(__version__)
+    try:
+        if cp.daq.FAKE:
+            prompt = '(FAKE) DAQ-CLI > '
+            intro = 'Running in fake daq mode\n' + intro
+    except AttributeError:  # if FAKE doesnt exist
+        pass
+
+    def help_fin_read(self):
+        self.cli.fin_parser.print_help()
+
+    def help_con_read(self):
+        self.cli.con_parser.print_help()
+
+    def help_view_data(self):
+        self.cli.view_parser.print_help()
+
+    def help_save(self):
+        self.cli.save_parser.print_help()
+
+    def help_quit(self):
+        self.cli.quit_parser.print_help()
 
     def complete_fin_read(self, text, line, begidx, endidx):
         return [i for i in self.cli.FIN_READ_ARGS if i.startswith(text)]
@@ -186,7 +198,7 @@ class Shell(Cmd):
         return [i for i in self.cli.QUIT_ARGS if i.startswith(text)]
 
 
-class ScriptShell(Shell):
+class ScriptShell(ShellBase):
     prompt = ''
     use_rawinput = False
 
@@ -199,25 +211,23 @@ class ScriptShell(Shell):
     def do_Rem(self, *args):
         pass
 
+    def postloop(self):
+        print('finished script execution.')
 
 if __name__ == '__main__':
     """ run shell """
     passed = len(sys.argv)
-    shell = create_shell(Shell().cmdloop)
     if passed > 1:
         if sys.argv[1] == 'FAKE':
             sys.argv.remove('FAKE')
             passed -= 1
+            Shell().cmdloop()
         if (passed > 1) and os.path.isfile(sys.argv[1]):
             input_stream = open(sys.argv[1], 'rt')
-            shell = create_shell(ScriptShell(stdin=input_stream).cmdloop)
+            ScriptShell(stdin=input_stream).cmdloop()
+            input_stream.close()
         elif passed != 1:  # if sys argv is NOT ".../shell.py FAKE"
-            shell = create_shell(lambda: Shell().onecmd(' '.join(sys.argv[1:])))
-    shell()
-    try:
-        input_stream.close()
-    except NameError:
-        pass
-    finally:
-        sys.exit(0)
-
+            Shell().onecmd(' '.join(sys.argv[1:]))
+    else:
+        Shell().cmdloop()
+    sys.exit(0)

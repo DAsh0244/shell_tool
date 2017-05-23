@@ -122,11 +122,13 @@ class ShellBase(Cmd):
         else:
             print('\n'+self.session+'\n')
 
+    # noinspection PyUnusedLocal
     @staticmethod
     def do_version(*args, **kwargs):
         """print version of shell"""
         print(__version__)
 
+    # noinspection PyUnusedLocal
     @staticmethod
     def do_buffer_size(num: int, *args, **kwargs):
         """
@@ -147,8 +149,9 @@ class ShellBase(Cmd):
             except ValueError:
                 print('invalid input, [num] must be of type <int>')
 
+    # noinspection PyUnusedLocal,PyPep8Naming
     @staticmethod
-    def do_EOF( line):
+    def do_EOF(line):
         return True
 
     @staticmethod
@@ -156,6 +159,8 @@ class ShellBase(Cmd):
         """Run a shell command"""
         output = os.popen(line).read()
         print(output)
+
+    # noinspection PyUnusedLocal
 
 
 class Shell(ShellBase):
@@ -188,12 +193,15 @@ class Shell(ShellBase):
     def complete_fin_read(self, text, line, begidx, endidx):
         return [i for i in self.cli.FIN_READ_ARGS if i.startswith(text)]
 
+    # noinspection PyUnusedLocal
     def complete_con_read(self, text, line, begidx, endidx):
         return [i for i in self.cli.CON_READ_ARGS if i.startswith(text)]
 
+    # noinspection PyUnusedLocal
     def complete_view(self, text, line, begidx, endidx):
         return [i for i in self.cli.VIEW_ARGS if i.startswith(text)]
 
+    # noinspection PyUnusedLocal
     def complete_quit(self, text, line, begidx, endidx):
         return [i for i in self.cli.QUIT_ARGS if i.startswith(text)]
 
@@ -205,9 +213,11 @@ class ScriptShell(ShellBase):
     def do_rem(self, *args):
         pass
 
+    # noinspection PyPep8Naming
     def do_REM(self, *args):
         pass
 
+    # noinspection PyPep8Naming
     def do_Rem(self, *args):
         pass
 

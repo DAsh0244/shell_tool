@@ -58,7 +58,7 @@ eg: `python  src/shell.py`
 ### Notes:
 There is an optional Command Line Argument `FAKE` 
 that allows you to run the shell with the 
-[fake_daq](src/utils/fake_daq.py) file for testing of the command line itself
+[fake_daq](daq_shell/utils/fake_daq.py) file for testing of the command line itself
 
 eg: `python  src/shell.py FAKE` 
 

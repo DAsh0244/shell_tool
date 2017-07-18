@@ -10,6 +10,6 @@
 #         'numpy',
 #     ],
 #     entry_points='''
-#         [shell:shell.py]
+#         [../src:shell.py]
 #     ''',
 # )

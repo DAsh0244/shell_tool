@@ -18,7 +18,7 @@ import sys
 import argparse
 from utils import constants as con
 try:
-    if str(sys.argv[1]).upper() == 'FAKE':
+    if 'FAKE' in sys.argv:
         from utils import fake_daq as daq
         # print('running in fake daq mode')
 except IndexError:
